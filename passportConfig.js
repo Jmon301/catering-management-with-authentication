@@ -6,7 +6,7 @@ function initialize(passport){
     const authenticateUser = (email, password, done) => {
         
         pool.query(
-            'SELECT * FROM users WHERE email=$1', [email], (err, results) => {
+            'SELECT * FROM users WHERE user_email=$1', [email], (err, results) => {
                 if(err){
                     throw err;
                 }
@@ -15,11 +15,12 @@ function initialize(passport){
                     const user = results.rows[0];
                     
                     bcrypt.compare(password, user.password, (err, isMatch) => {
-                        // isMatch = true;
+                        // console.log(password + " --- " + user.password)
                         if(err){
                             throw err
                         }
                         if(isMatch){
+                            console.log(user)
                             return done(null, user);
                         }else{                            
                             return done(null, false, {message: "Password is not correct"})
@@ -31,14 +32,19 @@ function initialize(passport){
     }
 
     passport.use(new LocalStrategy({
-        usernameField: "email",
+        usernameField: "user_email",
         passwordField: "password"
     },
     authenticateUser
     ));
-    passport.serializeUser((user, done) => done(null, user.id));
+    passport.serializeUser((user, done) => done(null, user.user_id));
+
+    passport.serializeUser((user, done) => {
+        console.log(user.user_id)
+        done(null, user.id)});
+
     passport.deserializeUser((id, done) => {
-        pool.query('SELECT * FROM users WHERE id=$1', [id], (err, results) => {
+        pool.query('SELECT * FROM users WHERE user_id=$1', [id], (err, results) => {
             if(err){
                 throw err;
             }

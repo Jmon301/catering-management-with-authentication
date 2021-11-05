@@ -90,7 +90,7 @@ app.post('/users/register', async (req, res) => {
         let hashedPassword = await bcrypt.hash(password, 10);
         console.log(hashedPassword);
         pool.query(
-            'SELECT * FROM users WHERE email=$1', [email], (err, results) => {
+            'SELECT * FROM users WHERE user_email=$1', [email], (err, results) => {
                 if(err){
                     throw err
                 }
@@ -100,7 +100,7 @@ app.post('/users/register', async (req, res) => {
                     res.render('register', {errors})
                 }else{
                     pool.query(
-                        'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, password', [name, email, hashedPassword], (err, results) => {
+                        'INSERT INTO users (user_name, user_email, password) VALUES ($1, $2, $3) RETURNING user_id, password', [name, email, hashedPassword], (err, results) => {
                             if(err){
                                 throw err
                             }
