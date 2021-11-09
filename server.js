@@ -6,22 +6,28 @@ const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const flash = require('express-flash');
 const passport = require('passport');
-
+const cors = require("cors");
 const initializePassport = require('./passportConfig');
 
 initializePassport(passport);
 
 const PORT = process.env.PORT || 4000; // Use this for production environment. Heroku
 
+// Enables cross origin resource sharing, allows to get, put, delete, patch and set
+app.use(cors());
+app.use(express.json());
+
 app.get('/', (req, res) => {
     res.render('index')
 });
 
+// Selects the templating engine, ejs
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended:false}));
 
 app.use(session({
-    secret: 'secret',
+    // secret: 'secret',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 }));
@@ -31,8 +37,8 @@ app.use(passport.session());
 
 app.use(flash());
 
-// Makes the folder styles available
-app.use(express.static(path.join(__dirname, './')));
+// Makes the folder public available
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/users/register', checkAuthenticated, (req, res) => {
     res.render('register');
@@ -69,10 +75,114 @@ app.get('/tasks', checkNotAuthenticated, (req, res) => {
     res.render('tasks');
 });
 
+///////////////////
+
+// Get all Recipes
+app.get("/getRecipes", async(req, res) => {
+    try{    
+        const allRecipes = await pool.query("SELECT * FROM recipes");
+        const allRecipesJson = res.json(allRecipes.rows);    
+    }catch(err){
+        console.error(err.message);
+    }
+});
+
+// Get a recipe
+app.get("/getRecipes/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const recipe = await pool.query("SELECT * FROM recipes WHERE recipe_id =  $1", [id]);
+        const recipesJson = res.json(recipe.rows[0]);
+    } catch (error) {
+        console.error(err.message)
+    }
+})
+
+// Get ingredients
+app.get("/getIngredients/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const ingredients = await pool.query("SELECT * FROM ingredients WHERE recipe_id =  $1", [id]);
+        const allIngredientsJson = res.json(ingredients.rows);
+    } catch (error) {
+        console.error(err.message)
+    }
+})
+
+// Get instructions
+app.get("/getInstructions/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const instructions = await pool.query("SELECT * FROM instructions WHERE recipe_id = $1", [id]);
+        const allInstructionsJson = res.json(instructions.rows);
+    } catch (error) {
+        console.error(err.message)
+    }
+})
+
+// Create a recipe
+app.post("/createRecipes", async (req, res)  => {
+    try{
+        const { recipe_name, recipe_description, cuisine, notes } = req.body; // This destructures the data coming from the body object that was set up in the index.js
+        newRecipe = await pool.query('INSERT INTO recipes(recipe_name, recipe_description, cuisine, notes) VALUES($1, $2, $3, $4) RETURNING *', [recipe_name, recipe_description, cuisine, notes]);
+        res.json(newRecipe.rows[0]);
+    } catch (err){
+        console.error(err.message);
+    }
+});
+
+// Add ingredients to the ingredients table with the recipe_id
+app.post("/addIngredients", async (req, res)  => {
+    try{
+        const { recipe_id, quantity, measure, ingredient  } = req.body;
+        newIngredient = await pool.query('INSERT INTO ingredients(recipe_id, ingredient_name, quantity, measure) VALUES($1, $2, $3, $4) RETURNING *', [recipe_id, ingredient, quantity, measure]);
+        res.json(newIngredient.rows[0]);
+    } catch (err){
+        console.error(err.message);
+    }
+});
+
+// Add instructions to the instructions table with the recipe_id
+app.post("/addInstructions", async (req, res)  => {
+    try{
+        const { recipe_id, instruction  } = req.body;
+        newInstruction = await pool.query('INSERT INTO instructions(instruction, recipe_id) VALUES($1, $2) RETURNING *', [instruction, recipe_id]);
+        res.json(newInstruction.rows[0]);
+    } catch (err){
+        console.error(err.message);
+    }
+});
+
+// Delete a recipe
+app.delete("/recipes/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteIngredients = await pool.query("DELETE FROM ingredients WHERE recipe_id = $1", [id])
+        const deleteInstructions  = await pool.query("DELETE FROM instructions WHERE recipe_id = $1", [id])
+        const deleteRecipe = await pool.query("DELETE FROM recipes WHERE recipe_id = $1", [id])
+        
+        res.json("Recipe was deleted");
+        console.log(`Recipe with ID ${id} has been deletd`);
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+// Update a recipe
+app.put("/recipes/:id", checkNotAuthenticated, async(req, res) => {
+    try {
+        const { recipe_name, recipe_description, cuisine, notes, recipe_id } = req.body;
+        const updateRecipe = await pool.query('UPDATE recipes SET recipe_name=$1, recipe_description=$2, cuisine=$3, notes=$4 WHERE recipe_id=$5', [recipe_name, recipe_description, cuisine, notes, recipe_id ])
+        res.json("Recipe was updated");
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+////////////////////
 
 app.post('/users/register', async (req, res) => {
     let{name, email, password, password2} = req.body;
-    console.log({name, email, password, password2});
     let errors =[];
     if (!name || !email || !password || !password2){
         errors.push({message: "Please enter all fields"});
@@ -88,7 +198,6 @@ app.post('/users/register', async (req, res) => {
     }else{
         // Form validation has passed
         let hashedPassword = await bcrypt.hash(password, 10);
-        console.log(hashedPassword);
         pool.query(
             'SELECT * FROM users WHERE user_email=$1', [email], (err, results) => {
                 if(err){

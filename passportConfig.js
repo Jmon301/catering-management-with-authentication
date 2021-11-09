@@ -4,18 +4,14 @@ const bcrypt = require('bcryptjs');
 
 function initialize(passport){
     const authenticateUser = (email, password, done) => {
-        
         pool.query(
             'SELECT * FROM users WHERE user_email=$1', [email], (err, results) => {
                 if(err){
                     throw err;
                 }
-                console.log(results.rows);
                 if(results.rows.length > 0){
                     const user = results.rows[0];
-                    
                     bcrypt.compare(password, user.password, (err, isMatch) => {
-                        // console.log(password + " --- " + user.password)
                         if(err){
                             throw err
                         }
@@ -38,9 +34,7 @@ function initialize(passport){
     authenticateUser
     ));
     passport.serializeUser((user, done) => done(null, user.user_id));
-
     passport.serializeUser((user, done) => {
-        console.log(user.user_id)
         done(null, user.id)});
 
     passport.deserializeUser((id, done) => {

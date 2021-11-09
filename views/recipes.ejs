@@ -5,27 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipes</title>
-    <link rel="stylesheet" href="/styles/basic.css">
-    <link rel="stylesheet" href="/styles/recipes.css">
+    <link rel="stylesheet" href="../styles/basic.css">
+    <link rel="stylesheet" href="../styles/recipes.css">
 </head>
 <body>
     <div id="wrapper">
 
         <div id="navigation-bar-container">
             <div id="logo-container">
-                <img src="./Images/logo.svg" alt="Logo">
+                <img src="../styles/images/logo.svg" alt="Logo">
             </div>
             <div id="navigation-items-container">
                 <ul id="navigation-items">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="events.html">Events</a></li>
-                    <li><a href="recipes.html">Recipes</a></li>
-                    <li><a href="tasks.html">Tasks</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/schedule">Schedule</a></li>
+                    <li><a href="/tasks">Tasks</a></li>
                 </ul>
             </div>
             <div id="login-container">
                 <ul id="login-item">
-                    <li>Login</li>
+                    <a href="/users/login">Login</a>
                 </ul>
             </div>
         </div>
@@ -38,30 +38,12 @@
         
             </br>
         
-            <div>
-                <form id="submit-recipe">
-                    <input type="text" id="recipe-name">
-                    <input type="text" id="recipe-description">
-                    <input type="text" id="recipe-cuisine">
-                    <input type="text" id="recipe-notes">
-                    <button id="save-button">Save Recipe</button>
-                </form>
-            </div>
-        
+        <div>
+            <button id="new-recipe-button">Create New Recipe</button>
+        </div>        
             </br>
-        
-            <div>
-                <h4>Recipe edition</h4>
-                <form >
-                    <input type="text" id="edit-recipe-name">        
-                    <input type="text" id="edit-recipe-description">
-                    <input type="text" id="edit-recipe-cuisine">
-                    <input type="text" id="edit-recipe-notes">
-                    <button id="update-button">Update</button>
-                </form>
-                   
-            </div>
         </div>
+
 
         <div id="footer-container">
             <div id="disclaimer-container">
@@ -69,16 +51,16 @@
             </div>
             <div id="social-container">
                 <ul>
-                    <li><img src="/Images/facebook.svg" alt="Facebook Logo Hyperlink"></li>
-                    <li><img src="/Images/instagram.svg" alt="Instagram Logo Hyperlink"></li>
-                    <li><img src="/Images/whatsapp.svg" alt="Whatsapp Logo Hyperlink"></li>
-                    <li><img src="/Images/linkedin.svg" alt="LinkedIn Logo Hyperlink"></li>
-                    <li><img src="/Images/twitter.svg" alt="Twitter Logo Hyperlink"></li>
+                    <li><img src="../styles/images/facebook.svg" alt="Facebook Logo"></li>
+                    <li><img src="../styles/images/instagram.svg" alt="Instagram Logo"></li>
+                    <li><img src="../styles/images/whatsapp.svg" alt="Whatsapp Logo"></li>
+                    <li><img src="../styles/images/linkedin.svg" alt="LinkedIn Logo"></li>
+                    <li><img src="../styles/images/twitter.svg" alt="Twitter Logo"></li>
                 </ul>
             </div>
         </div>
     </div>
     
-    <script src="index.js"></script>
+    <script src="../scripts/recipes.js"></script>
 </body>
 </html>
