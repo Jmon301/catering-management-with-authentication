@@ -13,11 +13,12 @@ let editRecipeObject = null;
 let editIngredientsObject = null;
 let editInstructionsObject = null;
 
+
 // Get all recipes. Is called when the page loads, and again after the recipe, ingredients, instructions are stored in the database. From the addInstructions function
 const getRecipes = async () => {
     results.innerHTML = "";
     try {
-        const response = await fetch("http://localhost:4000/getRecipes");
+        const response = await fetch(`./getRecipes`);
         const jsonData = await response.json();
         
         // Iterates over the results adding them to the results container
@@ -55,7 +56,7 @@ const getRecipes = async () => {
 // Fills out the edit fields with the object that was fetched from the database
 const getARecipe = async (recipeId) => {
     try {
-        const response = await fetch(`http://localhost:4000/getRecipes/${recipeId}`);
+        const response = await fetch(`./getRecipes/${recipeId}`);
         const jsonData = await response.json();  
         editRecipeObject = await jsonData;
     } catch (err) {
@@ -67,7 +68,7 @@ const getARecipe = async (recipeId) => {
 // Get the ingredients from the recipe to edit
 const getIngredients = async (recipeId) => {
     try {
-        const response = await fetch(`/getIngredients/${recipeId}`);
+        const response = await fetch(`./getIngredients/${recipeId}`);
         const jsonData = await response.json();    
         editIngredientsObject = await jsonData;
     } catch (err) {
@@ -79,7 +80,7 @@ const getIngredients = async (recipeId) => {
 // Get the ingredients from the recipe to edit
 const getInstructions = async (recipeId) => {
     try {
-        const response = await fetch(`/getInstructions/${recipeId}`);
+        const response = await fetch(`./getInstructions/${recipeId}`);
         const jsonData = await response.json();
         editInstructionsObject = await jsonData;
        
@@ -432,7 +433,7 @@ const newRecipeSection = () => {
 const addIngredients = async (quantity, measure, ingredient, recipe_id) => {
     try {
         const body = { recipe_id, quantity, measure, ingredient };
-        const response  = await fetch("/addIngredients", {
+        const response  = await fetch("./addIngredients", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
@@ -457,7 +458,7 @@ const addIngredientContainers = (recipe_id) => {
 const addInstructions = async (instruction, recipe_id) => {
     try {
         const body = { recipe_id, instruction };
-        const response  = await fetch("/addInstructions", {
+        const response  = await fetch("./addInstructions", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
@@ -490,7 +491,7 @@ const createRecipe = async (e) => {
     try {
         // This will post to the path were the server is receiving requests. The const body takes the values and creates an object by using the curly braces
         const body = { recipe_name, recipe_description, cuisine, notes };
-        const response  = await fetch("/createRecipes", {
+        const response  = await fetch("./createRecipes", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(body)
@@ -512,7 +513,7 @@ const createRecipe = async (e) => {
 // Delete Recipe
 const deleteRecipe = async (id) => {
     try {
-        const deleteRecipe = await fetch(`http://localhost:4000/recipes/${id}`, {
+        const deleteRecipe = await fetch(`./recipes/${id}`, {
             method: "DELETE"
         });
         getRecipes();
@@ -531,7 +532,7 @@ const editRecipe = async (recipe_id) => {
         console.log(recipe_id + " -- " + recipe_name + " -- " + recipe_description + " -- " + cuisine + " -- " + notes)
 
         const body = {recipe_id, recipe_name, recipe_description, cuisine, notes};
-        const response = await fetch(`/recipes/${recipe_id}`, {
+        const response = await fetch(`./recipes/${recipe_id}`, {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(body)
