@@ -172,8 +172,31 @@ app.delete("/recipes/:id", async (req, res) => {
 app.put("/recipes/:id", checkNotAuthenticated, async(req, res) => {
     try {
         const { recipe_name, recipe_description, cuisine, notes, recipe_id } = req.body;
-        const updateRecipe = await pool.query('UPDATE recipes SET recipe_name=$1, recipe_description=$2, cuisine=$3, notes=$4 WHERE recipe_id=$5', [recipe_name, recipe_description, cuisine, notes, recipe_id ])
+        const updateRecipe = await pool.query('UPDATE recipes SET recipe_name=$1, recipe_description=$2, cuisine=$3, notes=$4 WHERE recipe_id=$5 RETURNING *', [recipe_name, recipe_description, cuisine, notes, recipe_id ])
         res.json("Recipe was updated");
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+// Update ingredients
+app.put("/updateIngredients/:id", checkNotAuthenticated, async(req, res) => {
+
+    try {
+        const { quantity, measure, ingredient, recipe_id, ingredient_id  } = req.body;
+        const updateIngredient = await pool.query('UPDATE ingredients SET ingredient_name=$1, quantity=$2, measure=$3 WHERE ingredient_id=$4 RETURNING *', [ingredient, quantity, measure, ingredient_id])
+        res.json("Ingredient was updated");
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+// Update instructions
+app.put("/updateInstructions/:id", checkNotAuthenticated, async(req, res) => {
+    try {
+        const { recipe_id, instruction, instruction_id  } = req.body;
+        const updateInstruction = await pool.query('UPDATE instructions SET instruction=$1 WHERE instruction_id=$2 RETURNING *', [instruction, instruction_id])
+        res.json("Instruction was updated");
     } catch (err) {
         console.error(err.message)
     }
