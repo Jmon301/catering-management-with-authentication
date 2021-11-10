@@ -768,9 +768,6 @@ const showRecipeDetails = async () => {
 
         detailsContainer.appendChild(detailsIngredientsContainer);
 
-        
-        
-
     } catch (err) {
         console.error(err.message)
     }

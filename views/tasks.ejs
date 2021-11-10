@@ -6,13 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tasks</title>
     <link rel="stylesheet" href="../styles/basic.css">
+    <link rel="stylesheet" href="../styles/tasks.css">
 </head>
 <body>
     <div id="wrapper">
 
         <div id="navigation-bar-container">
             <div id="logo-container">
-                <img src="..styles/images/logo.svg" alt="Logo">
+                <img src="../styles/images/logo.svg" alt="Logo">
             </div>
             <div id="navigation-items-container">
                 <ul id="navigation-items">
@@ -29,9 +30,18 @@
             </div>
         </div>
 
-        <div id="main-container">
-
+        <div id="main-tasks-container">
+            <h1>TASKS</h1>
+            <div>
+                <div>
+                    <button id="create-task-button">Create Task</button>
+                </div>
+                <div id="tasks-container">
+                </div>
+            </div>
         </div>
+        
+            </br>
 
         <div id="footer-container">
             <div id="disclaimer-container">
@@ -50,6 +60,6 @@
 
     </div>
 
-
+    <script src="../scripts/tasks.js"></script>
 </body>
 </html>

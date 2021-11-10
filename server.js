@@ -202,7 +202,182 @@ app.put("/updateInstructions/:id", checkNotAuthenticated, async(req, res) => {
     }
 })
 
-////////////////////
+//////////////////////
+// TASKS
+
+// Get all tasks
+app.get("/getTasks", async(req, res) => {
+    try{    
+        const allTasks = await pool.query("SELECT * FROM tasks");
+        res.json(allTasks.rows);    
+    }catch(err){
+        console.error(err.message);
+    }
+});
+
+// Create a task
+app.post("/addTask", async (req, res)  => {
+    try{
+        const {task_name, assigned_cook } = req.body; 
+        newTask = await pool.query('INSERT INTO tasks(task_name, assigned_cook) VALUES($1, $2) RETURNING *', [task_name, assigned_cook]);
+        res.json(newTask.rows[0]);
+    } catch (err){
+        console.error(err.message);
+    }
+});
+
+
+// Get a task
+app.get("/getTask/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const task = await pool.query("SELECT * FROM tasks WHERE task_id = $1", [id]);
+        res.json(task.rows[0]);
+    } catch (error) {
+        console.error(err.message)
+    }
+});
+
+// Update a task
+app.put("/updateTask/:id", async (req, res) => {
+    try {
+        const { id, task_name, assigned_cook  } = req.body;
+        const updateTask = await pool.query('UPDATE tasks SET task_name=$1, assigned_cook=$2 WHERE task_id=$3 RETURNING *', [task_name, assigned_cook, id]);
+        res.json("Task was updated");
+    } catch (err) {
+        console.error(err.message)
+    }
+});
+
+// Delete a task
+app.delete("/deleteTask/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteTask = await pool.query("DELETE FROM tasks WHERE task_id = $1", [id])
+        res.json("Task was deleted");
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+
+//////////////////////
+// ACTIVITIES
+
+// Get all activities
+app.get("/getActivities", async(req, res) => {
+    try{    
+        const allActivities = await pool.query("SELECT * FROM activities");
+        res.json(allActivities.rows);    
+    }catch(err){
+        console.error(err.message);
+    }
+});
+
+// Create an activity
+app.post("/addActivity", async (req, res)  => {
+    try{
+        const {activity_name, date_time } = req.body; 
+        newActivity = await pool.query('INSERT INTO activities(activity_name, date_time) VALUES($1, $2) RETURNING *', [activity_name, date_time]);
+        res.json(newActivity.rows[0]);
+    } catch (err){
+        console.error(err.message);
+    }
+});
+
+
+// Get an activity
+app.get("/getActivity/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const activity = await pool.query("SELECT * FROM activities WHERE activity_id = $1", [id]);
+        res.json(activity.rows[0]);
+    } catch (error) {
+        console.error(err.message)
+    }
+});
+
+// Update an activity
+app.put("/updateActivity/:id", async (req, res) => {
+    try {
+        const { id, activity_name, date_time  } = req.body;
+        const updateActivity = await pool.query('UPDATE activities SET activity_name=$1, date_time=$2 WHERE activity_id=$3 RETURNING *', [activity_name, date_time, id]);
+        res.json("Activity was updated");
+    } catch (err) {
+        console.error(err.message)
+    }
+});
+
+// Delete an activity
+app.delete("/deleteActivity/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteActivity = await pool.query("DELETE FROM activities WHERE activity_id = $1", [id])
+        res.json("Activity was deleted");
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+//////////////////////
+// EVENTS
+
+// Get all events
+app.get("/getEvents", async(req, res) => {
+    try{    
+        const allEvents = await pool.query("SELECT * FROM events");
+        res.json(allEvents.rows);    
+    }catch(err){
+        console.error(err.message);
+    }
+});
+
+// Create an event
+app.post("/addEvent", async (req, res)  => {
+    try{
+        const {event_name, number_guests, date_time, cuisine, notes } = req.body; 
+        newEvent = await pool.query('INSERT INTO events(event_name, number_guests, date_time, cuisine, notes) VALUES($1, $2, $3, $4, $5) RETURNING *', [event_name, number_guests, date_time, cuisine, notes]);
+        res.json(newEvent.rows[0]);
+    } catch (err){
+        console.error(err.message);
+    }
+});
+
+
+// Get an event
+app.get("/getEvent/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const event = await pool.query("SELECT * FROM events WHERE event_id = $1", [id]);
+        res.json(event.rows[0]);
+    } catch (error) {
+        console.error(err.message)
+    }
+});
+
+// Update an event
+app.put("/updateEvent/:id", async (req, res) => {
+    try {
+        const { id, event_name, number_guests, date_time, cuisine, notes } = req.body;
+        const updateEvent = await pool.query('UPDATE events SET event_name=$1, number_guests=$2, date_time=$3, cuisine=$4, notes=$5 WHERE event_id=$6 RETURNING *', [event_name, number_guests, date_time, cuisine, notes, id]);
+        res.json("Event was updated");
+    } catch (err) {
+        console.error(err.message)
+    }
+});
+
+// Delete an event
+app.delete("/deleteEvent/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleteEvent = await pool.query("DELETE FROM events WHERE event_id = $1", [id])
+        res.json("Event was deleted");
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+////////////////////////
 
 app.post('/users/register', async (req, res) => {
     let{name, email, password, password2} = req.body;
