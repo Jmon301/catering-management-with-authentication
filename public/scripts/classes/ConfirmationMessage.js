@@ -1,6 +1,6 @@
 import Message from "./Message";
 
-export default class ConfirmationMessage extends Message{
+export class ConfirmationMessage extends Message{
     constructor(title, message, confirmationButton) {
         super(title, message, confirmationButton);
         this.confirmationButton = confirmationButton;
