@@ -1,3 +1,4 @@
+import ConfirmationMessage from "./classes/ConfirmationMessage";
 const wrapper = document.querySelector("#wrapper");
 const tasksContainer = document.querySelector("#tasks-container");
 const createTaskButton = document.querySelector("#create-task-button");
@@ -93,6 +94,10 @@ const saveNewTask = async () => {
     } catch (error) {
         console.error(error.message)
     }
+
+    const message = new ConfirmationMessage("New Task", "A new task has been successfully created", "Ok");
+    console.log(message);
+
 }
 
 // Retrieves the task to edit

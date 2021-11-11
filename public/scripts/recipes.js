@@ -877,4 +877,14 @@ const assignRecipeNamesEventListeners = () => {
         destroyEditContainer();
         showRecipeDetails();
     }))
-}
+};
+
+
+
+const searchInput = document.querySelector("#search-input");
+const searchButton = document.querySelector("#search-button");
+
+searchInput.addEventListener('keyup', (e) => {
+    console.log(e.target.value);
+    searchRecipes();
+})
