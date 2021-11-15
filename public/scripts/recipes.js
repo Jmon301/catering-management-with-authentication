@@ -3,7 +3,6 @@ const results = document.querySelector("#results");
 const createRecipeButton = document.querySelector("#new-recipe-button");
 const newRecipeButton = document.querySelector("#new-recipe-button");
 const updateButton = document.querySelector("#update-button");
-
 let deleteButtons;
 let editButtons;
 let recipeNames;
@@ -13,58 +12,50 @@ let recipeId;
 let editRecipeObject = null;
 let editIngredientsObject = null;
 let editInstructionsObject = null;
-
+let allRecipesByName;
+let filteredRecipes;
 
 // Get all recipes. Is called when the page loads, and again after the recipe, ingredients, instructions are stored in the database. From the addInstructions function
 const getRecipes = async () => {
     try {
-        const response = await fetch("./getRecipes");
+        const response = await fetch("./getRecipeNames");
         const jsonData = await response.json();
+        allRecipesByName = await jsonData;
         
         // Iterates over the results adding them to the results container
         jsonData.forEach(item =>{
-            const container = document.createElement("div");
-            container.id = "recipes-container";
-
-            const recipeName = document.createElement("h4");
-            recipeName.innerHTML = item.recipe_name;
-            recipeName.id = item.recipe_id;
-            recipeName.className = "recipe-title";
-            container.appendChild(recipeName);
-
-            const recipeDescription = document.createElement("p");
-            recipeDescription.innerHTML = item.recipe_description;
-            recipeDescription.id = item.recipe_id;
-            recipeDescription.className = "recipe-description";
-            container.appendChild(recipeDescription);
-
-            const deleteButton = document.createElement("span");
-            deleteButton.innerHTML = "--Delete";
-            deleteButton.id = item.recipe_id;
-            deleteButton.className = "delete-button";
-            container.appendChild(deleteButton);
-
-            const editButton = document.createElement("span");
-            editButton.innerHTML = "--Edit";
-            editButton.id = item.recipe_id;
-            editButton.className = "edit-button";
-            container.appendChild(editButton);
-
+        const container = document.createElement("div");
+        container.id = "recipe-container";
+        
+            content = 
+            `
+                <h2 id="${item.recipe_id}" class="recipe-title">${item.recipe_name}</h2>
+                <div id="recipe-info">
+                    <span><b>Description:</b> ${item.recipe_description}</span><br><br>
+                    <span><b>Cuisine:</b> ${item.cuisine}</span>
+                </div>
+                <div id="recipe-buttons">
+                    <button id="${item.recipe_id}" class="recipe-details">Details</button>
+                    <div>
+                        <span id="${item.recipe_id}" class="edit-button">Edit</span>
+                        <span id="${item.recipe_id}" class="delete-button">Delete</span>
+                    </div>
+                </div>
+            `;
+            container.innerHTML = content;
             results.appendChild(container);
-            
         });
+
         deleteButtons = document.querySelectorAll(".delete-button");    
         editButtons = document.querySelectorAll(".edit-button"); 
-        recipeNames = document.querySelectorAll(".recipe-title");
+        recipeNames = document.querySelectorAll(".recipe-details");
         
         assignDeleteEventListeners();
         assignEditEventListeners();
         assignRecipeNamesEventListeners();
-        
     } catch (err) {
         console.error(err.message)
     }
-    
 }
 
 // Get a recipe to edit
@@ -98,7 +89,6 @@ const getInstructions = async (recipeId) => {
         const response = await fetch(`./getInstructions/${recipeId}`);
         const jsonData = await response.json();
         editInstructionsObject = await jsonData;
-       
     } catch (err) {
         console.error(err.message)
     } 
@@ -108,33 +98,35 @@ const getInstructions = async (recipeId) => {
 // Add a new ingredient container inside the edit recipe container
 const addEditIngredientContainer = () => {
     const ingredientsContainer = document.querySelector("#edit-ingredients-container");    
-
     const editIngredientContainer = document.createElement("div");
     editIngredientContainer.className = "edit-ingredient-container";
 
     const editIngredientQuantity = document.createElement("input");
-    editIngredientQuantity.id = "#new-ingredient-quantity";
+    editIngredientQuantity.id = "new-ingredient-quantity";
     editIngredientQuantity.placeholder = "Quantity";
-    editIngredientQuantity.type = "text";
+    editIngredientQuantity.type = "number";
     editIngredientQuantity.name = "ingredient_quantity";
+    editIngredientQuantity.required = true;
     editIngredientContainer.appendChild(editIngredientQuantity);
 
     const editIngredientMeasure = document.createElement("input");
-    editIngredientMeasure.id = "#new-ingredient-measure";
-    editIngredientMeasure.placeholder = "Ingredient measure";
+    editIngredientMeasure.id = "new-ingredient-measure";
+    editIngredientMeasure.placeholder = "Measure";
     editIngredientMeasure.type = "text";
     editIngredientMeasure.name = "ingredient_measure";
+    editIngredientMeasure.required = true;
     editIngredientContainer.appendChild(editIngredientMeasure);
 
     const editIngredientName = document.createElement("input");
-    editIngredientName.id = "#new-ingredient-name";
-    editIngredientName.placeholder = "Ingredient name";
+    editIngredientName.id = "new-ingredient-name";
+    editIngredientName.placeholder = "Ingredient";
     editIngredientName.type = "text";
     editIngredientName.name = "ingredient_name";
+    editIngredientName.required = true;
     editIngredientContainer.appendChild(editIngredientName);
 
     const removeIngredientButton = document.createElement("button");
-    removeIngredientButton.innerHTML = "Remove Ingredient";
+    removeIngredientButton.innerHTML = "Remove";
     removeIngredientButton.id = "remove-ingredient-button";
     removeIngredientButton.className = "remove-ingredient-button"
     editIngredientContainer.appendChild(removeIngredientButton);
@@ -160,17 +152,17 @@ const addEditInstructionContainer = () => {
     newInstruction.placeholder = "Instruction";
     newInstruction.type = "text";
     newInstruction.name = "instruction";
+    newInstruction.required = true;
     newInstructionContainer.appendChild(newInstruction);
 
     const removeInstructionButton = document.createElement("button");
-    removeInstructionButton.innerHTML = "Remove Instruction";
+    removeInstructionButton.innerHTML = "Remove";
     removeInstructionButton.id = "remove-instruction-button";
     removeInstructionButton.className = "remove-instruction-button"
     newInstructionContainer.appendChild(removeInstructionButton);
 
     instructionsContainer.appendChild(newInstructionContainer);
 
-    // Detects a click to remove an instruction
     removeInstructionButton.addEventListener('click', (e) => {
         e.preventDefault();
         e.target.parentElement.remove();
@@ -179,58 +171,60 @@ const addEditInstructionContainer = () => {
 
 // Create and fill up the fields to update
 const renderEditRecipe = () => {
+    applyOverlay();
     const editContainer = document.createElement("div");
     editContainer.id = "edit-container";
+
+    const formContainer = document.createElement("div");
+    formContainer.id = "edit-form-container";
 
     const editTitle = document.createElement("h2");
     editTitle.innerHTML = "Edit Recipe";
     editTitle.className = "edit-recipe-title";
     editContainer.appendChild(editTitle);
 
-    const editForm = document.createElement("form");
-    editForm.id = editRecipeObject.recipe_id;      
-
     const editInputRecipeName = document.createElement("input");
     editInputRecipeName.value = editRecipeObject.recipe_name;
     editInputRecipeName.type = "text";
     editInputRecipeName.id = "edit-recipe-name";
     editInputRecipeName.name = "recipe_name";
-    editForm.appendChild(editInputRecipeName);
+    editInputRecipeName.required = true;
+    formContainer.appendChild(editInputRecipeName);
 
     const editInputRecipeDescription = document.createElement("input");
     editInputRecipeDescription.value = editRecipeObject.recipe_description;
     editInputRecipeDescription.type = "text";
     editInputRecipeDescription.id = "edit-recipe-description";
     editInputRecipeDescription.name = "recipe_description";
-    editForm.appendChild(editInputRecipeDescription);
+    editInputRecipeDescription.required = true;
+    formContainer.appendChild(editInputRecipeDescription);
 
     const editInputRecipeCuisine = document.createElement("input");
     editInputRecipeCuisine.value = editRecipeObject.cuisine;
     editInputRecipeCuisine.type = "text";
     editInputRecipeCuisine.id = "edit-recipe-cuisine";
     editInputRecipeCuisine.name = "cuisine";
-    editForm.appendChild(editInputRecipeCuisine);
+    editInputRecipeCuisine.required = true;
+    formContainer.appendChild(editInputRecipeCuisine);
 
-    const editInputRecipeNotes = document.createElement("input");
-    editInputRecipeNotes.value = editRecipeObject.notes;
-    editInputRecipeNotes.type = "text";
+    const editInputRecipeNotes = document.createElement("textarea");
+    editInputRecipeNotes.innerHTML = editRecipeObject.notes;
     editInputRecipeNotes.id = "edit-recipe-notes";
-    editInputRecipeNotes.name = "notes";
-    editForm.appendChild(editInputRecipeNotes);
+    editInputRecipeNotes.rows = "3";
+    formContainer.appendChild(editInputRecipeNotes);
 
-    // Ingredients section
-    const editIngredientsContainer = document.createElement("div");
-    editIngredientsContainer.id = "edit-ingredients-container";
-
-    const editIngredientTitle = document.createElement("h2");
-    editIngredientTitle.innerHTML = "Ingredients";
-    editIngredientsContainer.appendChild(editIngredientTitle);
+    editContainer.appendChild(formContainer);
 
     const addIngredientButton = document.createElement("button");
     addIngredientButton.innerHTML = "Add Ingredient";
     addIngredientButton.id = "add-ingredient-button";
     addIngredientButton.className = "add-ingredient-button"
-    editIngredientsContainer.appendChild(addIngredientButton);
+    editContainer.appendChild(addIngredientButton);
+
+    const editIngredientsContainer = document.createElement("div");
+    editIngredientsContainer.id = "edit-ingredients-container";
+    editIngredientsContainer.className = "none";
+    editContainer.appendChild(editIngredientsContainer);
 
     editIngredientsObject.forEach(item => {
         const editIngredientContainer = document.createElement("div");
@@ -239,51 +233,51 @@ const renderEditRecipe = () => {
 
         const editIngredientQuantity = document.createElement("input");
         editIngredientQuantity.value = item.quantity;
-        editIngredientQuantity.type = "text";
+        editIngredientQuantity.type = "number";
         editIngredientQuantity.id = "edit-ingredient-quantity";
+        editIngredientQuantity.required = true;
         editIngredientContainer.appendChild(editIngredientQuantity);
 
         const editIngredientMeasure = document.createElement("input");
         editIngredientMeasure.value = item.measure;
         editIngredientMeasure.type = "text";
         editIngredientMeasure.id = "edit-ingredient-measure";
+        editIngredientMeasure.required = true;
         editIngredientContainer.appendChild(editIngredientMeasure);
 
         const editIngredientName = document.createElement("input");
         editIngredientName.value = item.ingredient_name;
         editIngredientName.type = "text";
         editIngredientName.id = "edit-ingredient-name";
+        editIngredientName.required = true;
         editIngredientContainer.appendChild(editIngredientName);
 
         const removeIngredientButton = document.createElement("button");
-        removeIngredientButton.innerHTML = "Remove Ingredient";
+        removeIngredientButton.innerHTML = "Remove";
         removeIngredientButton.id = "remove-ingredient-button";
         removeIngredientButton.className = "remove-ingredient-button"
         editIngredientContainer.appendChild(removeIngredientButton);
 
         editIngredientsContainer.appendChild(editIngredientContainer);
-    });
+    }); 
 
     // Detects a click to add an ingredient
     addIngredientButton.addEventListener('click', (e) => {
         e.preventDefault();
+        removeEmptyContainerClass("edit-ingredients");
         addEditIngredientContainer();
     });
-
-    // Instructions section
-    const editInstructionsContainer = document.createElement("div");
-    
-    editInstructionsContainer.id = "edit-instructions-container";
-
-    const editInstructionTitle = document.createElement("h2");
-    editInstructionTitle.innerHTML = "Instructions";
-    editInstructionsContainer.appendChild(editInstructionTitle);
 
     const addInstructionButton = document.createElement("button");
     addInstructionButton.innerHTML = "Add Instruction";
     addInstructionButton.id = "add-instruction-button";
     addInstructionButton.className = "add-instruction-button"
-    editInstructionsContainer.appendChild(addInstructionButton);
+    editContainer.appendChild(addInstructionButton);
+
+    const editInstructionsContainer = document.createElement("div");
+    editInstructionsContainer.id = "edit-instructions-container";
+    editInstructionsContainer.className = "none";
+    editContainer.appendChild(editInstructionsContainer);
 
     editInstructionsObject.forEach(item => {
         const editInstructionContainer = document.createElement("div");
@@ -294,12 +288,13 @@ const renderEditRecipe = () => {
         editInstruction.value = item.instruction;
         editInstruction.type = "text";
         editInstruction.id = `instruction-${item.instruction_id}`;
+        editInstruction.required = true;
         editInstructionContainer.appendChild(editInstruction);
 
         const removeInstructionButton = document.createElement("button");
-        removeInstructionButton.innerHTML = "Remove Instruction";
-        removeInstructionButton.id = "remove-Instruction-button";
-        removeInstructionButton.className = "remove-Instruction-button"
+        removeInstructionButton.innerHTML = "Remove";
+        removeInstructionButton.id = "remove-instruction-button";
+        removeInstructionButton.className = "remove-instruction-button"
         editInstructionContainer.appendChild(removeInstructionButton);
 
         editInstructionsContainer.appendChild(editInstructionContainer);
@@ -308,27 +303,54 @@ const renderEditRecipe = () => {
     // Detects a click to add an ingredient
     addInstructionButton.addEventListener('click', (e) => {
         e.preventDefault();
+        removeEmptyContainerClass("edit-instruction");
         addEditInstructionContainer();
     });
 
-    editForm.appendChild(editIngredientsContainer);
-    editForm.appendChild(editInstructionsContainer);
-    editContainer.appendChild(editForm);
+    const buttonsContainer = document.createElement("div");
+    buttonsContainer.id = "recipe-buttons-container"
 
-    const updateButton = document.createElement("input");
-    updateButton.type = "submit";
-    updateButton.value = "Update"
+    const updateButton = document.createElement("button");
+    updateButton.innerHTML = "Update"
     updateButton.id = "update-button";
     updateButton.className = "update-button"
-    editContainer.appendChild(updateButton);
+    buttonsContainer.appendChild(updateButton);
 
     const cancelButton = document.createElement("button");
     cancelButton.innerHTML = "Cancel";
     cancelButton.id = "cancel-button";
     cancelButton.className = "cancel-button"
-    editContainer.appendChild(cancelButton);
+    buttonsContainer.appendChild(cancelButton);
+
+    editContainer.appendChild(buttonsContainer);
 
     wrapper.appendChild(editContainer);
+    checkEmptyContainer("edit-ingredient");
+    checkEmptyContainer("edit-instruction");
+
+    // Detects a click to remove an ingredient
+    if(document.querySelector("#edit-ingredients-container")){
+        const removeIngredient = document.querySelectorAll("#remove-ingredient-button");
+        removeIngredient.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.target.parentElement.remove();
+                checkEmptyContainer("edit-ingredient");
+            });
+        })
+    }
+
+    // Detects a click to remove an instruction
+    if(document.querySelector("#edit-instructions-container")){
+        const removeInstruction = document.querySelectorAll("#remove-instruction-button");
+        removeInstruction.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.target.parentElement.remove();
+                checkEmptyContainer("edit-instruction");
+            });
+        })
+    }
 
     // Detects a click to update a recipe
     updateButton.addEventListener('click', (e) => {
@@ -339,7 +361,8 @@ const renderEditRecipe = () => {
     // Detects a click to update a recipe
     cancelButton.addEventListener('click', (e) => {
         e.preventDefault();
-
+        destroyOverlay();
+        destroyEditContainer();
     })
 }
 
@@ -351,28 +374,31 @@ const addIngredientContainer = () => {
     newIngredientContainer.id = "new-ingredient-container";
 
     const newIngredientQuantity = document.createElement("input");
-    newIngredientQuantity.id = "#new-ingredient-quantity";
+    newIngredientQuantity.id = "new-ingredient-quantity";
     newIngredientQuantity.placeholder = "Quantity";
-    newIngredientQuantity.type = "text";
+    newIngredientQuantity.type = "number";
     newIngredientQuantity.name = "ingredient_quantity";
+    newIngredientQuantity.required = true;
     newIngredientContainer.appendChild(newIngredientQuantity);
 
     const newIngredientMeasure = document.createElement("input");
-    newIngredientMeasure.id = "#new-ingredient-measure";
-    newIngredientMeasure.placeholder = "Ingredient measure";
+    newIngredientMeasure.id = "new-ingredient-measure";
+    newIngredientMeasure.placeholder = "Measure";
     newIngredientMeasure.type = "text";
     newIngredientMeasure.name = "ingredient_measure";
+    newIngredientMeasure.required = true;
     newIngredientContainer.appendChild(newIngredientMeasure);
 
     const newIngredientName = document.createElement("input");
-    newIngredientName.id = "#new-ingredient-name";
-    newIngredientName.placeholder = "Ingredient name";
+    newIngredientName.id = "new-ingredient-name";
+    newIngredientName.placeholder = "Ingredient";
     newIngredientName.type = "text";
     newIngredientName.name = "ingredient_name";
+    newIngredientName.required = true;
     newIngredientContainer.appendChild(newIngredientName);
 
     const removeIngredientButton = document.createElement("button");
-    removeIngredientButton.innerHTML = "Remove Ingredient";
+    removeIngredientButton.innerHTML = "Remove";
     removeIngredientButton.id = "remove-ingredient-button";
     removeIngredientButton.className = "remove-ingredient-button"
     newIngredientContainer.appendChild(removeIngredientButton);
@@ -383,6 +409,7 @@ const addIngredientContainer = () => {
     removeIngredientButton.addEventListener('click', (e) => {
         e.preventDefault();
         e.target.parentElement.remove();
+        checkEmptyContainer("ingredient");
     });
 }
 
@@ -394,14 +421,15 @@ const addInstructionContainer = () => {
     newInstructionContainer.id="new-instruction-container";
 
     const newInstruction = document.createElement("input");
-    newInstruction.id = "#new-instruction";
+    newInstruction.id = "new-instruction";
     newInstruction.placeholder = "Instruction";
     newInstruction.type = "text";
     newInstruction.name = "instruction";
+    newInstruction.required = true;
     newInstructionContainer.appendChild(newInstruction);
 
     const removeInstructionButton = document.createElement("button");
-    removeInstructionButton.innerHTML = "Remove Instruction";
+    removeInstructionButton.innerHTML = "Remove";
     removeInstructionButton.id = "remove-instruction-button";
     removeInstructionButton.className = "remove-instruction-button"
     newInstructionContainer.appendChild(removeInstructionButton);
@@ -412,11 +440,55 @@ const addInstructionContainer = () => {
     removeInstructionButton.addEventListener('click', (e) => {
         e.preventDefault();
         e.target.parentElement.remove();
+        checkEmptyContainer("instruction");
     });
 }
 
+// Check if the ingredients and instructions container is empty
+const checkEmptyContainer = (type) => {
+    if(type == "ingredient"){
+        const ingredientsContainer = document.querySelector("#ingredients-container");
+        if(ingredientsContainer.innerHTML == ""){
+            ingredientsContainer.classList.add("empty-container");
+        }
+    }else if(type == "instruction"){
+        const instructionsContainer = document.querySelector("#instructions-container");
+        if(instructionsContainer.innerHTML == ""){
+            instructionsContainer.classList.add("empty-container");
+        }
+    }else if(type == "edit-ingredient"){
+        const editIngredientsContainer = document.querySelector("#edit-ingredients-container");
+        if(editIngredientsContainer.innerHTML == ""){
+            editIngredientsContainer.classList.add("empty-container");
+        }
+    }else{
+        const editInstructionsContainer = document.querySelector("#edit-instructions-container");
+        if(editInstructionsContainer.innerHTML == ""){
+            editInstructionsContainer.classList.add("empty-container");
+        }
+    }
+}
+
+// Removes the class that sets the ingredients and instructions containers to a height 0
+const removeEmptyContainerClass = (type) => {
+    if(type == "ingredient"){
+        const ingredientsContainer = document.querySelector("#ingredients-container");
+        ingredientsContainer.classList.remove("empty-container");
+    }else if(type == "instruction"){
+        const instructionsContainer = document.querySelector("#instructions-container");
+        instructionsContainer.classList.remove("empty-container");
+    }else if(type == "edit-instruction"){
+        const editInstructionsContainer = document.querySelector("#edit-instructions-container");
+        editInstructionsContainer.classList.remove("empty-container");
+    }else{
+        const editIngredientsContainer = document.querySelector("#edit-ingredients-container");
+        editIngredientsContainer.classList.remove("empty-container");
+    }
+}
+
 // Create the new recipe section
-const newRecipeSection = () => {
+const renderNewRecipe = () => {
+    applyOverlay();
     try {
         const newRecipeContainer = document.createElement("div");
         newRecipeContainer.id = "new-recipe-container";
@@ -433,6 +505,7 @@ const newRecipeSection = () => {
         createInputRecipeName.type = "text";
         createInputRecipeName.id = "recipe-name";
         createInputRecipeName.name = "recipe_name";
+        createInputRecipeName.required = true;
         createRecipeForm.appendChild(createInputRecipeName);
 
         const createInputRecipeDescription = document.createElement("input");
@@ -440,6 +513,7 @@ const newRecipeSection = () => {
         createInputRecipeDescription.type = "text";
         createInputRecipeDescription.id = "recipe-description";
         createInputRecipeDescription.name = "recipe_description";
+        createInputRecipeName.required = true;
         createRecipeForm.appendChild(createInputRecipeDescription);
 
         const createInputRecipeCuisine = document.createElement("input");
@@ -447,61 +521,58 @@ const newRecipeSection = () => {
         createInputRecipeCuisine.type = "text";
         createInputRecipeCuisine.id = "recipe-cuisine";
         createInputRecipeCuisine.name = "cuisine";
+        createInputRecipeCuisine.required = true;
         createRecipeForm.appendChild(createInputRecipeCuisine);
 
-        const createInputRecipeNotes = document.createElement("input");
+        const createInputRecipeNotes = document.createElement("textarea");
         createInputRecipeNotes.placeholder = "Notes";
-        createInputRecipeNotes.type = "text";
         createInputRecipeNotes.id = "recipe-notes";
         createInputRecipeNotes.name = "notes";
         createRecipeForm.appendChild(createInputRecipeNotes);
 
         newRecipeContainer.appendChild(createRecipeForm);
 
-        const breakLine = document.createElement('br');
-        newRecipeContainer.appendChild(breakLine);
-
-        const breakLine2 = document.createElement('br');
-        newRecipeContainer.appendChild(breakLine2);
+        const newIngredientButton = document.createElement("button");
+        newIngredientButton.innerHTML = "Add Ingredient";
+        newIngredientButton.id = "new-ingredient-button";
+        newIngredientButton.className = "new-ingredient-button"
+        newRecipeContainer.appendChild(newIngredientButton);
 
         const ingredientsContainer = document.createElement("div");
         ingredientsContainer.id = "ingredients-container";
         ingredientsContainer.className = "ingredients-container";
         newRecipeContainer.appendChild(ingredientsContainer);
 
-        const newIngredientButton = document.createElement("button");
-        newIngredientButton.innerHTML = "Add Ingredient";
-        newIngredientButton.id = "new-ingredient-button";
-        newIngredientButton.className = "new-ingredient-button"
-        ingredientsContainer.appendChild(newIngredientButton);
+        const newInstructionButton = document.createElement("button");
+        newInstructionButton.innerHTML = "Add Instruction";
+        newInstructionButton.id = "new-instruction-button";
+        newInstructionButton.className = "new-instruction-button"
+        newRecipeContainer.appendChild(newInstructionButton);
 
         const instructionsContainer = document.createElement("div");
         instructionsContainer.id = "instructions-container";
         instructionsContainer.className = "instructions-container";
         newRecipeContainer.appendChild(instructionsContainer);
 
-        const newInstructionButton = document.createElement("button");
-        newInstructionButton.innerHTML = "Add Instruction";
-        newInstructionButton.id = "new-instruction-button";
-        newInstructionButton.className = "new-instruction-button"
-        instructionsContainer.appendChild(newInstructionButton);
-
-        const breakLine3 = document.createElement('br');
-        newRecipeContainer.appendChild(breakLine3);
+        const recipeButtonsContainer = document.createElement("div");
+        recipeButtonsContainer.id = "recipe-buttons-container";
+        newRecipeContainer.appendChild(recipeButtonsContainer);
 
         const saveRecipeButton = document.createElement("button");
         saveRecipeButton.innerHTML = "Save";
         saveRecipeButton.id = "save-recipe-button";
         saveRecipeButton.className = "save-recipe-button"
-        newRecipeContainer.appendChild(saveRecipeButton);
+        recipeButtonsContainer.appendChild(saveRecipeButton);
 
         const cancelNewRecipeButton = document.createElement("button");
         cancelNewRecipeButton.innerHTML = "Cancel";
         cancelNewRecipeButton.id = "cancel-new-recipe-button";
         cancelNewRecipeButton.className = "cancel-button"
-        newRecipeContainer.appendChild(cancelNewRecipeButton);
+        recipeButtonsContainer.appendChild(cancelNewRecipeButton);
 
         wrapper.appendChild(newRecipeContainer);
+        checkEmptyContainer("ingredient");
+        checkEmptyContainer("instruction");
 
         // Detects a click to save a recipe
         saveRecipeButton.addEventListener('click', (e) => {
@@ -512,18 +583,21 @@ const newRecipeSection = () => {
         // Detects a click to cancel the creation of the new recipe
         cancelNewRecipeButton.addEventListener('click', (e) => {
             e.preventDefault();
+            destroyOverlay();
             destroyNewRecipeContainer();
         });
 
         // Detects a click to add an ingredient
         newIngredientButton.addEventListener('click', (e) => {
             e.preventDefault();
+            removeEmptyContainerClass("ingredient");
             addIngredientContainer();
         });
 
         // Detects a click to add an instruction
         newInstructionButton.addEventListener('click', (e) => {
             e.preventDefault();
+            removeEmptyContainerClass("instruction");
             addInstructionContainer();
         });
     } catch (err) {
@@ -533,7 +607,6 @@ const newRecipeSection = () => {
 
 // Add ingredients to the ingredients table in the database
 const addIngredients = async (quantity, measure, ingredient, recipe_id) => {
-    console.log(recipe_id);
     try {
         const body = { recipe_id, quantity, measure, ingredient };
         const response  = await fetch("./addIngredients", {
@@ -565,7 +638,7 @@ const addInstructions = async (instruction, recipe_id) => {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
-    }).then(()=> destroyNewRecipeContainer(), destroyResults(), getRecipes());
+    })
     } catch (error) {
         console.error(error.message)
     }
@@ -577,14 +650,16 @@ const addInstructionContainers = (recipe_id) => {
     instructionContainers.forEach(item => {
         const instruction = item.children[0].value;
         addInstructions(instruction, recipe_id);
-    })
+    });
+    destroyNewRecipeContainer();
+    destroyResults();
+    getRecipes();
+    destroyOverlay();
 }
 
 // Create a recipe
 const createRecipe = async (e) => {
-    
     const newRecipeContainer = document.querySelector("#new-recipe-container");
-
     let recipe_id;
 
     const recipe_name = document.querySelector("#recipe-name").value;
@@ -593,7 +668,6 @@ const createRecipe = async (e) => {
     const notes = document.querySelector("#recipe-notes").value;
 
     try {
-        // This will post to the path were the server is receiving requests. The const body takes the values and creates an object by using the curly braces
         const body = { recipe_name, recipe_description, cuisine, notes };
         const response  = await fetch("./createRecipes", {
             method: "POST",
@@ -611,6 +685,28 @@ const createRecipe = async (e) => {
     }
 }
 
+// Render the delete confirmation
+const renderDeleteConfirmation = async (id) => {
+    applyOverlay();
+    // Instantiates the DeleteMessage class and uses it to render a message
+    const message = new DeleteMessage("Recipe Deletion", `Are you sure you want to delete this recipe?`, "Ok", "Cancel");
+    message.renderMessage(message);
+
+    const messageContainer = document.querySelector("#delete-message-container");
+    const cancelButton = document.querySelector("#message-cancel-button");
+    const confirmationButton = document.querySelector("#message-confirmation-button");
+    cancelButton.addEventListener('click', () => {
+        wrapper.removeChild(messageContainer);
+        return;
+    });
+
+    confirmationButton.addEventListener('click', () => {
+        wrapper.removeChild(messageContainer);
+        deleteRecipe(id);
+        destroyOverlay();
+    });
+}
+
 // Delete Recipe
 const deleteRecipe = async (id) => {
     try {
@@ -619,8 +715,11 @@ const deleteRecipe = async (id) => {
         });
         destroyResults(), getRecipes();
     } catch (err) {
-        console.log(err.message)
+        console.error(err.message)
     }
+    // Instantiates the ConfirmationMessage class and uses it to render a message
+   const message = new ConfirmationMessage("Recipe Deleted", `The recipe with ID: ${id} has been deleted`, "Ok");
+   message.renderMessage(message);
 }
 
 // Update ingredients to the ingredients table in the database
@@ -693,9 +792,8 @@ const editRecipe = async (recipe_id) => {
     const recipe_description = document.querySelector("#edit-recipe-description").value;
     const cuisine = document.querySelector("#edit-recipe-cuisine").value;
     const notes = document.querySelector("#edit-recipe-notes").value;
-    try {      
-        console.log(recipe_id + " -- " + recipe_name + " -- " + recipe_description + " -- " + cuisine + " -- " + notes)
 
+    try {      
         const body = {recipe_id, recipe_name, recipe_description, cuisine, notes};
         const response = await fetch(`./recipes/${recipe_id}`, {
             method: "PUT",
@@ -707,6 +805,8 @@ const editRecipe = async (recipe_id) => {
             recipe_id = data.recipe_id;
             addEditedIngredientContainers(recipe_id);
             addEditedInstructionContainers(recipe_id);
+            destroyEditContainer();
+            destroyOverlay();
         });
     } catch (err) {
         console.error(err.message)
@@ -715,43 +815,32 @@ const editRecipe = async (recipe_id) => {
 
 // Show recipe details
 const showRecipeDetails = async () => {
+    applyOverlay();
     destroyEditContainer();
     destroyNewRecipeContainer();
     destroyRecipeDetails();
     
     const detailsContainer = document.createElement("div");
+    detailsContainer.className = "details-container";
+    detailsContainer.id = "details-container";
 
     try {
         const response = await fetch(`./getRecipes/${recipeId}`);
         const jsonRecipeData = await response.json();  
 
-        detailsContainer 
-        detailsContainer.id = "details-container";
+        const content = 
+        `
+            <h2 id="details-title">${jsonRecipeData.recipe_name}</h2>
+            <p id="details-description"><b>Description:</b> ${jsonRecipeData.recipe_description}</p>
+            <p id="details-cuisine"><b>Cuisine: </b>${jsonRecipeData.cuisine}</p>
+            <p id="details-notes"><b>Notes: </b>${jsonRecipeData.notes}</p>
+        `;
 
-        const detailsTitle = document.createElement("h2");
-        detailsTitle.id = "details-title";
-        detailsTitle.innerHTML = jsonRecipeData.recipe_name;
-        detailsContainer.appendChild(detailsTitle);
-
-        const detailsDescription = document.createElement("h4");
-        detailsDescription.id = "details-description";
-        detailsDescription.innerHTML = jsonRecipeData.recipe_description;
-        detailsContainer.appendChild(detailsDescription);
-
-        const detailsCuisine = document.createElement("h4");
-        detailsCuisine.id = "details-cuisine";
-        detailsCuisine.innerHTML = jsonRecipeData.cuisine;
-        detailsContainer.appendChild(detailsCuisine);
-
-        const detailsNotes = document.createElement("h4");
-        detailsNotes.id = "details-notes";
-        detailsNotes.innerHTML = jsonRecipeData.notes;
-        detailsContainer.appendChild(detailsNotes);
+        detailsContainer.innerHTML = content;
     } catch (err) {
         console.error(err.message)
     }
     
-
     try {
         const response = await fetch(`./getIngredients/${recipeId}`);
         const jsonIngredientData = await response.json();    
@@ -759,15 +848,19 @@ const showRecipeDetails = async () => {
         const detailsIngredientsContainer = document.createElement("div");
         detailsIngredientsContainer.id = "details-ingredients-container";
 
+        if(jsonIngredientData.length > 0){
+            const ingredientsTitle = document.createElement("h2");
+            ingredientsTitle.id = "ingredients-title";
+            ingredientsTitle.innerHTML = "Ingredients"
+            detailsContainer.appendChild(ingredientsTitle);
+        }
+
         jsonIngredientData.forEach(item=>{
             const ingredient = document.createElement("p");
             ingredient.innerHTML = `${item.quantity} ${item.measure} ${item.ingredient_name}`;
-
             detailsIngredientsContainer.appendChild(ingredient);
         });
-
         detailsContainer.appendChild(detailsIngredientsContainer);
-
     } catch (err) {
         console.error(err.message)
     }
@@ -779,17 +872,28 @@ const showRecipeDetails = async () => {
         const detailsInstructionsContainer = document.createElement("div");
         detailsInstructionsContainer.id = "details-instructions-container";
 
+        if(jsonInstructionData.length > 0){
+            const instructionsTitle = document.createElement("h2");
+            instructionsTitle.id = "instructions-title";
+            instructionsTitle.innerHTML = "Instructions"
+            detailsContainer.appendChild(instructionsTitle);
+        }
+
+        let index = 1;
         jsonInstructionData.forEach(item=>{
             const instruction = document.createElement("p");
-            instruction.innerHTML = `${item.instruction}`;
-
+            instruction.innerHTML = `${index}. ${item.instruction}`;
             detailsInstructionsContainer.appendChild(instruction);
+            index++;
         });
 
         detailsContainer.appendChild(detailsInstructionsContainer);
     } catch (err) {
         console.error(err.message)
-    } 
+    }
+
+    const buttonContainer = document.createElement("div");
+    buttonContainer.id = "detail-button-container";
     
     const closeButton = document.createElement("button");
     closeButton.id = 'close-details-button';
@@ -798,9 +902,11 @@ const showRecipeDetails = async () => {
 
     closeButton.addEventListener('click', ()=> {
         destroyRecipeDetails();
+        destroyOverlay();
     })
 
-    detailsContainer.appendChild(closeButton);
+    buttonContainer.appendChild(closeButton);
+    detailsContainer.appendChild(buttonContainer);
     wrapper.appendChild(detailsContainer);
 }
 
@@ -816,8 +922,7 @@ const destroyRecipeDetails = () => {
         const recipeDetailsContainer = document.querySelector("#details-container")
         recipeDetailsContainer.innerHTML = '';
         wrapper.removeChild(recipeDetailsContainer);
-    }
-    
+    }  
 }
 
 // Destroy create recipe container
@@ -838,23 +943,19 @@ const destroyEditContainer = () => {
     }
 }
 
-// Get recipes on start
-destroyResults();
-getRecipes();
-
 // Detect a click to open the create recipe section
 newRecipeButton.addEventListener('click', (e) => {
+    e.preventDefault();
     destroyEditContainer();
     destroyNewRecipeContainer();
-    e.preventDefault();
-    newRecipeSection();
+    renderNewRecipe();
 });
 
 // Detects a click to delete a recipe
 const assignDeleteEventListeners = () => {
     deleteButtons.forEach(item => item.addEventListener('click', (e) => {
         const recipeId = item.id;
-        deleteRecipe(recipeId)
+        renderDeleteConfirmation(recipeId)
     }))
 }
 
@@ -868,7 +969,6 @@ const assignEditEventListeners = () => {
     }))
 }
 
-
 // Detects a click to view recipe details
 const assignRecipeNamesEventListeners = () => {
     recipeNames.forEach(item => item.addEventListener('click', (e) => {
@@ -879,12 +979,79 @@ const assignRecipeNamesEventListeners = () => {
     }))
 };
 
-
-
+// Query the dom to have the search input bar readily available
 const searchInput = document.querySelector("#search-input");
-const searchButton = document.querySelector("#search-button");
 
+// Render the search results
+const searchResults = async (filteredRecipes) => {
+    results.innerHTML = '';
+    filteredRecipes.forEach(item => {
+        const container = document.createElement("div");
+        container.id="recipe-container";
+
+        content = 
+            `
+                <h2 id="${item.recipe_id}" class="recipe-title">${item.recipe_name}</h2>
+                <div id="recipe-info">
+                    <span><b>Description:</b> ${item.recipe_description}</span><br><br>
+                    <span><b>Cuisine:</b> ${item.cuisine}</span>
+                </div>
+                <div id="recipe-buttons">
+                    <button id="${item.recipe_id}" class="recipe-details">Details</button>
+                    <div>
+                        <span id="${item.recipe_id}" class="edit-button">Edit</span>
+                        <span id="${item.recipe_id}" class="delete-button">Delete</span>
+                    </div>
+                </div>
+            `;
+
+        container.innerHTML = content;
+        results.appendChild(container);
+
+        deleteButtons = document.querySelectorAll(".delete-button");    
+        editButtons = document.querySelectorAll(".edit-button"); 
+        recipeNames = document.querySelectorAll(".recipe-details");
+        
+        assignDeleteEventListeners();
+        assignEditEventListeners();
+        assignRecipeNamesEventListeners();
+    })
+}
+
+// Filter the array of allRecipesByName based on the search term
+const searchRecipes = async (searchTerm) =>{
+    filteredRecipes = allRecipesByName.filter((item) => 
+        item.recipe_name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    if(filteredRecipes.length > 0){
+        searchResults(filteredRecipes);
+        return
+    }
+    results.innerHTML = "Sorry... Your search did not produce any results";
+};
+
+// Detects a key stroke and search through the recipe object that was fetched from the database
 searchInput.addEventListener('keyup', (e) => {
-    console.log(e.target.value);
-    searchRecipes();
-})
+    if(!e.target.value == ''){
+        searchRecipes(e.target.value);
+        return;
+    }
+    results.innerHTML = '';
+    getRecipes();
+});
+
+// Apply an overlay to the background
+const applyOverlay = () => {
+    document.getElementById("sub-wrapper").classList.add("sub-wrapper-overlay")
+    document.getElementById("overlay").style.display = "block";
+}
+
+// Removes the overlay from the background
+const destroyOverlay = () => {
+    document.getElementById("sub-wrapper").classList.remove("sub-wrapper-overlay");
+    document.getElementById("overlay").style.display = "none";
+}
+
+// Get recipes on start
+destroyResults();
+getRecipes();

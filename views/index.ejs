@@ -5,13 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catering Management</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles/basic.css">
+    <link rel="stylesheet" href="../styles/index.css">
 </head>
 <body>
     <div id="wrapper">
         <div id="navigation-bar-container">
             <div id="logo-container">
-                <img id="logo" src="../styles/images/logo.svg" alt="Logo">
+                <img id="logo" src="../styles/images/logo-no-text.svg" alt="Logo">
             </div>
             <div id="navigation-items-container">
                 <ul id="navigation-items">
@@ -21,35 +25,40 @@
                     <li><a href="/tasks">Tasks</a></li>
                 </ul>
             </div>
-            <div id="login-container">
-                <ul id="login-item">
-                    <a href="/users/login">Login</a>
+            <div id="logout-container">
+                <ul id="logout-item">
+                    <a href="/users/logout">Logout</a>
                 </ul>
             </div>
         </div>
 
         <div id="main-container">
-            <div id="events-container">
-                <a href="/events" class="overlay-link"></a>
+            <div id="events-link-container">
+                <a href="/events" class="overlay-link">
                 <h2><a href="/events">Events</a></h2>
+                <p>Create a list of events. Add dates, number of guests, type of cuisine, and any note you consider relevant for the event.</p>
+                </a>
             </div>
-            <div id="recipes-container">
+            <div id="recipes-link-container">
                 <a href="/recipes" class="overlay-link"></a>
                 <h2><a href="/recipes">Recipes</a></h2>
+                <p>Manage all of your recipes. Create, edit, delete and review all the recipes you need.</p>
             </div>
-            <div id="schedule-container">
+            <div id="schedule-link-container">
                 <a href="/schedule" class="overlay-link"></a>
                 <h2><a href="/schedule">Schedule</a></h2>
+                <p>Create a schedule of all the activities you need in order to run your kitchen efficiently.</p>
             </div>
-            <div id="tasks-container">
+            <div id="tasks-link-container">
                 <a href="/tasks" class="overlay-link"></a>
                 <h2><a href="/tasks">Tasks</a></h2>
+                <p>Control your work assignation. Create and assign tasks to your staff.</p>
             </div>
         </div>
 
         <div id="footer-container">
             <div id="disclaimer-container">
-                <p>All rights reserved Julian Montoya Franco</p>
+                <p>All rights reserved Julian Montoya Franco - 2021</p>
             </div>
             <div id="social-container">
                 <ul>

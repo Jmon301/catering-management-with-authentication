@@ -17,9 +17,7 @@ const PORT = process.env.PORT || 4000; // Use this for production environment. H
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.render('index')
-});
+
 
 // Selects the templating engine, ejs
 app.set('view engine', 'ejs');
@@ -39,6 +37,13 @@ app.use(flash());
 
 // Makes the folder public available
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', checkAuthenticated, (req, res) => {
+    res.render('login')
+});
+app.get('/index', checkNotAuthenticated, (req, res) => {
+    res.render('index')
+});
 
 app.get('/users/register', checkAuthenticated, (req, res) => {
     res.render('register');
@@ -81,6 +86,16 @@ app.get('/tasks', checkNotAuthenticated, (req, res) => {
 app.get("/getRecipes", async(req, res) => {
     try{    
         const allRecipes = await pool.query("SELECT * FROM recipes");
+        const allRecipesJson = res.json(allRecipes.rows);    
+    }catch(err){
+        console.error(err.message);
+    }
+});
+
+// Get only the recipes names, description and id
+app.get("/getRecipeNames", async(req, res) => {
+    try{    
+        const allRecipes = await pool.query("SELECT recipe_id, recipe_name, recipe_description, cuisine FROM recipes");
         const allRecipesJson = res.json(allRecipes.rows);    
     }catch(err){
         console.error(err.message);
@@ -208,7 +223,7 @@ app.put("/updateInstructions/:id", checkNotAuthenticated, async(req, res) => {
 // Get all tasks
 app.get("/getTasks", async(req, res) => {
     try{    
-        const allTasks = await pool.query("SELECT * FROM tasks");
+        const allTasks = await pool.query("SELECT * FROM tasks WHERE completed = false");
         res.json(allTasks.rows);    
     }catch(err){
         console.error(err.message);
@@ -218,8 +233,8 @@ app.get("/getTasks", async(req, res) => {
 // Create a task
 app.post("/addTask", async (req, res)  => {
     try{
-        const {task_name, assigned_cook } = req.body; 
-        newTask = await pool.query('INSERT INTO tasks(task_name, assigned_cook) VALUES($1, $2) RETURNING *', [task_name, assigned_cook]);
+        const {task_name, assigned_cook, timestamp, completed  } = req.body; 
+        newTask = await pool.query('INSERT INTO tasks(task_name, assigned_cook, time_completed, completed) VALUES($1, $2, $3, $4) RETURNING *', [task_name, assigned_cook, timestamp, completed]);
         res.json(newTask.rows[0]);
     } catch (err){
         console.error(err.message);
@@ -241,13 +256,35 @@ app.get("/getTask/:id", async (req, res) => {
 // Update a task
 app.put("/updateTask/:id", async (req, res) => {
     try {
-        const { id, task_name, assigned_cook  } = req.body;
-        const updateTask = await pool.query('UPDATE tasks SET task_name=$1, assigned_cook=$2 WHERE task_id=$3 RETURNING *', [task_name, assigned_cook, id]);
+        const { id, task_name, assigned_cook, completed } = req.body;
+        const updateTask = await pool.query('UPDATE tasks SET task_name=$1, assigned_cook=$2, completed=$3 WHERE task_id=$4 RETURNING *', [task_name, assigned_cook, completed, id]);
         res.json("Task was updated");
     } catch (err) {
         console.error(err.message)
     }
 });
+
+// Update task status
+app.put("/updateTaskStatus/:id", async (req, res) => {
+    try {
+        const { id } = req.body;
+        const updateTaskStatus = await pool.query('UPDATE tasks SET completed = true WHERE task_id=$1 RETURNING *', [id]);
+        res.json("Task status was updated");
+    } catch (err) {
+        console.error(err.message)
+    }
+});
+
+// Get all completed tasks
+app.get("/getCompletedTasks", async(req, res) => {
+    try{    
+        const completedTasks = await pool.query("SELECT * FROM tasks WHERE completed = true");
+        res.json(completedTasks.rows);    
+    }catch(err){
+        console.error(err.message);
+    }
+});
+
 
 // Delete a task
 app.delete("/deleteTask/:id", async (req, res) => {
@@ -389,7 +426,7 @@ app.post('/users/register', async (req, res) => {
         errors.push({message: "Password should be at least 6 characters"});
     }
     if(password != password2){
-        errors.push({message: "Password do not match"});
+        errors.push({message: "Passwords do not match"});
     }
     if(errors.length > 0){
         res.render('register', {errors});
@@ -423,7 +460,7 @@ app.post('/users/register', async (req, res) => {
 });
 
 app.post('/users/login', passport.authenticate('local', {
-    successRedirect: "/",
+    successRedirect: "/index",
     failureRedirect: "/users/login",
     failureFlash: true
 }));
@@ -431,7 +468,7 @@ app.post('/users/login', passport.authenticate('local', {
 // Redirects authenticated users
 function checkAuthenticated(req, res, next) {
     if(req.isAuthenticated()){
-        return res.redirect('/');
+        return res.redirect('/index');
     }
     next();
 }

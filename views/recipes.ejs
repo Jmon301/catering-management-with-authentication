@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <title>Recipes</title>
     <link rel="stylesheet" href="../styles/basic.css">
     <link rel="stylesheet" href="../styles/recipes.css">
@@ -11,58 +14,60 @@
 <body>
     <div id="wrapper">
 
-        <div id="navigation-bar-container">
-            <div id="logo-container">
-                <img src="../styles/images/logo.svg" alt="Logo">
-            </div>
-            <div id="navigation-items-container">
-                <ul id="navigation-items">
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/events">Events</a></li>
-                    <li><a href="/schedule">Schedule</a></li>
-                    <li><a href="/tasks">Tasks</a></li>
-                </ul>
-            </div>
-            <div id="login-container">
-                <ul id="login-item">
-                    <a href="/users/login">Login</a>
-                </ul>
-            </div>
-        </div>
+        <div id="sub-wrapper">
 
-        <div id="main-recipes-container">
-            <h1>RECIPES</h1>
-            <input id="search-input" type="text">
-            <button id="search-button">Search</button>
-            <div>
-                <div id="results"></div>
+            <div id="overlay">
             </div>
-        
-            </br>
-        
-        <div>
-            <button id="new-recipe-button">Create New Recipe</button>
-        </div>        
-            </br>
-        </div>
+
+            <div id="navigation-bar-container">
+                <div id="logo-container">
+                    <img src="../styles/images/logo-no-text.svg" alt="Logo">
+                </div>
+                <div id="navigation-items-container">
+                    <ul id="navigation-items">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/events">Events</a></li>
+                        <li><a href="/schedule">Schedule</a></li>
+                        <li><a href="/tasks">Tasks</a></li>
+                    </ul>
+                </div>
+                <div id="logout-container">
+                    <ul id="logout-item">
+                        <a href="/users/logout">Logout</a>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="main-recipes-container">
+                <h1>RECIPES</h1>
+                <input id="search-input" type="text" placeholder="Search recipes...">
+                <div>
+                    <div id="results"></div>
+                </div>
+                <div>
+                    <button id="new-recipe-button">Create New Recipe</button>
+                </div>
+            </div>
 
 
-        <div id="footer-container">
-            <div id="disclaimer-container">
-                <p>All rights reserved Julian Montoya Franco</p>
-            </div>
-            <div id="social-container">
-                <ul>
-                    <li><img src="../styles/images/facebook.svg" alt="Facebook Logo"></li>
-                    <li><img src="../styles/images/instagram.svg" alt="Instagram Logo"></li>
-                    <li><img src="../styles/images/whatsapp.svg" alt="Whatsapp Logo"></li>
-                    <li><img src="../styles/images/linkedin.svg" alt="LinkedIn Logo"></li>
-                    <li><img src="../styles/images/twitter.svg" alt="Twitter Logo"></li>
-                </ul>
+            <div id="footer-container">
+                <div id="disclaimer-container">
+                    <p>All rights reserved Julian Montoya Franco</p>
+                </div>
+                <div id="social-container">
+                    <ul>
+                        <li><img src="../styles/images/facebook.svg" alt="Facebook Logo"></li>
+                        <li><img src="../styles/images/instagram.svg" alt="Instagram Logo"></li>
+                        <li><img src="../styles/images/whatsapp.svg" alt="Whatsapp Logo"></li>
+                        <li><img src="../styles/images/linkedin.svg" alt="LinkedIn Logo"></li>
+                        <li><img src="../styles/images/twitter.svg" alt="Twitter Logo"></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
     
+    <script src="../scripts/classes/Message.js"></script>
     <script src="../scripts/recipes.js"></script>
 </body>
 </html>

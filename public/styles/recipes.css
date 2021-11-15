@@ -1,4 +1,405 @@
 #main-recipes-container{
     width: 70vw;
-    height: 65vh;
+    height: 75vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    color: #3D3D3D;
+}
+
+#main-recipes-container h1{
+    text-align: center;
+    font-family: 'Sitka Heading';
+    font-weight: bold;
+    margin: 0;
+}
+
+#search-input{
+    display: block;
+    height: 2em;
+    min-height: 2em;
+    width: 25em;
+    border-radius: 6px;
+    border-width: thin;
+    border-color: lightgrey;
+    border-width: thin;
+    text-align: center;
+    margin: 1em 0;
+    font-family: 'Noto Sans';
+    color: #3D3D3D;
+}
+
+#search-input::placeholder{
+    color: #B5B5B5;
+    font-family: 'Noto Sans';
+    text-align: center;
+}
+
+#results{
+    width: 90vw;
+    height:55vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 1em 0;
+}
+
+#recipe-container{
+    width: 200px;
+    height: 240px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-family: 'Noto Sans';
+    padding: 0.5em 1.5em;
+    box-shadow: 3px 3px 3px #3D3D3D;
+    border-radius: 6px;
+    overflow: hidden; 
+    font-size: 90%;  
+}
+
+#recipe-container:hover{
+    transition-duration: 0.15s;
+    border-style: solid;
+    border-color: #1A6FC5;
+    border-width: thin;
+    border-radius: 6px;
+    box-shadow: 4px 4px 4px #6D6D6D;
+}
+
+#recipe-container h2{
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    font-family: 'Sitka Heading';
+    color: #3D3D3D;
+}
+
+#recipe-container p{
+    font-family: 'Noto Sans';
+    text-align: left;
+    margin: 0.2em;
+    color: #3D3D3D;
+    max-height: 80px;
+    overflow: auto;
+}
+
+#recipe-container span{
+    font-weight: lighter;
+}
+
+#recipe-info{
+    height: 80px;
+    overflow: auto;
+}
+
+#recipe-buttons{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    padding: 0.5em;
+}
+
+.edit-button, .delete-button{
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 0.5em;
+}
+
+.edit-button{
+    color: #1A6FC5;
+    margin-right: 0.8em;
+}
+
+.delete-button{
+    color: #FE5555;
+}
+
+.recipe-details{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 6em;
+    height: 2em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+}
+
+.recipe-details:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
+#new-recipe-button{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 12em;
+    height: 3em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+}
+
+#new-recipe-button:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
+#new-recipe-container{
+    position: absolute;
+    margin: 0 auto;
+    top: 5%;
+    background-color: white;
+    width: 600px;
+    padding: 1em;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 6px;
+    box-shadow: 3px 3px 3px #3D3D3D;
+}
+
+#edit-container{
+    position: absolute;
+    top: 5%;
+    margin: 0 auto;
+    background-color: white;
+    width: 600px;
+    padding: 1em;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 6px;
+    box-shadow: 3px 3px 3px #3D3D3D;
+}
+
+.details-container{
+    position: absolute;
+    margin: 0 auto;
+    top: 5%;
+    background-color: white;
+    width: 500px;
+    max-height: 850px;
+    padding: 2em;
+    z-index: 3;
+    border-radius: 6px;
+    box-shadow: 3px 3px 3px #3D3D3D;
+    color:#3D3D3D;
+}
+
+#new-recipe-container h2, #edit-container h2{
+    font-family: 'Sitka Heading';
+    font-weight: bold;
+    text-align: center;
+    color: #3D3D3D;
+}
+
+#recipe-name, #recipe-description, #recipe-cuisine, #recipe-notes,
+#edit-recipe-name, #edit-recipe-description, #edit-recipe-cuisine, #edit-recipe-notes{
+    display: block;
+    height: 2em;
+    min-height: 2em;
+    max-height: 8em;
+    width: 15em;
+    min-width: 15em;
+    max-width: 15em;
+    border-radius: 6px;
+    border-width: thin;
+    border-color: lightgrey;
+    border-width: thin;
+    text-align: center;
+    margin: 1em 0;
+    font-family: 'Noto Sans';
+    color: #3D3D3D;
+}
+
+#new-ingredient-button, #new-instruction-button, #add-ingredient-button, #add-instruction-button {
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 10em;
+    height: 2.5em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+    margin-top: 1em;
+}
+
+#new-ingredient-button:hover, #new-instruction-button:hover, #add-ingredient-button:hover, #add-instruction-button:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
+#ingredients-container, #instructions-container, #edit-ingredients-container, #edit-instructions-container{
+    max-height: 150px;
+    margin: 1em;
+    padding-right: 1em;
+    overflow: auto;
+}
+
+.empty-container{
+    display: none;
+}
+
+#new-ingredient-container, #new-instruction-container{
+    margin: 0.5em 0;
+}
+
+#new-ingredient-quantity, #edit-ingredient-quantity{
+    width: 6em;
+    display: inline;
+    margin-right: 1em;
+}
+
+#new-ingredient-measure, #edit-ingredient-measure{
+    width: 6em;
+    display: inline;
+    margin-right: 1em;
+}
+
+#new-ingredient-name, #edit-ingredient-name{
+    width: 14em;
+    display: inline;
+    margin-right: 1em;
+}
+
+#remove-ingredient-button, #remove-instruction-button{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 6em;
+    height: 2em;
+    font-family: 'Noto Sans';
+    font-size: 80%;
+}
+
+#remove-ingredient-button:hover, #remove-instruction-button:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
+#new-ingredient-container input{
+    color: #3D3D3D;
+    font-family: 'Noto Sans';
+    text-align: center;
+    border-radius: 3px;
+    border-width: thin;
+    border-color: lightgrey;
+    border-width: thin;
+}
+
+#new-ingredient-container input::placeholder{
+    font-size: 90%;
+    text-align: center;
+}
+
+#new-recipe-notes, #edit-recipe-notes{
+    display: block;
+    width: 15em;
+    max-width: 15em;
+    border-radius: 4px;
+    border-width: thin;
+    border-color: lightgrey;
+    border-width: thin;
+    text-align: left;
+    margin: 1em 0;
+    padding-top: 5px;
+    font-family: 'Noto Sans';
+    color: #3D3D3D;
+}
+
+#new-recipe-container input::placeholder, #new-recipe-container textarea::placeholder{
+    color: #B5B5B5;
+    font-family: 'Noto Sans';
+    text-align: center;
+}
+
+#new-instruction, .edit-instruction-container input{
+    width: 30em;
+    height: 2em;
+    display: inline;
+    margin-right: 1em;
+    color: #3D3D3D;
+    font-family: 'Noto Sans';
+    text-align: center;
+    border-radius: 3px;
+    border-width: thin;
+    border-color: lightgrey;
+    border-width: thin;
+}
+
+#recipe-buttons-container{
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 1em;
+}
+
+#save-recipe-button, #cancel-new-recipe-button, #update-button, #cancel-button, #close-details-button{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 6em;
+    height: 3em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+}
+
+#save-recipe-button:hover, #cancel-new-recipe-button:hover, #update-button:hover, #cancel-button:hover, #close-details-button:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
+.edit-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.details-container h2{
+    text-align: center;
+    font-family: 'Sitka Heading';
+    margin-bottom: 0.5em;
+}
+
+.details-container p{
+    font-family: 'Noto Sans';
+}
+
+#details-ingredients-container, #details-instructions-container{
+    max-height: 200px;
+    overflow:auto
+}
+
+#details-ingredients-container p, #details-instructions-container p{
+    margin: 0.2em 0;
+}
+
+
+#detail-button-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

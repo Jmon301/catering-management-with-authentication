@@ -76,12 +76,12 @@ const getActivities = async () => {
         allDeleteButtons.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
-                deleteActivity(item.id);
+                renderDeleteConfirmation(item.id);
             })
         });
     }
     catch(error){
-        console.log(error.message);
+        console.error(error.message);
     }
 }
 
@@ -90,7 +90,6 @@ const saveNewActivity = async () => {
     const activity_name = document.querySelector("#new-activity-input").value;
     const date = document.querySelector("#new-activity-date-input").value;
     const time = document.querySelector("#new-activity-time-input").value;
-
     const date_time = `${date} ${time}:00`;
 
     try {
@@ -185,7 +184,6 @@ const updateActivity = async (id) => {
     const activity_name = document.querySelector("#edit-activity-name").value;
     const date = document.querySelector("#edit-date").value;
     const time = document.querySelector("#edit-time").value;
-
     const date_time = `${date} ${time}:00`;
 
     try {      
@@ -251,6 +249,26 @@ const renderNewActivity = () => {
     })
 }
 
+// Render the delete confirmation
+const renderDeleteConfirmation = async (id) => {
+    // Instantiates the DeleteMessage class and uses it to render a message
+    const message = new DeleteMessage("Task Deletion", `Are you sure you want to delete this task?`, "Ok", "Cancel");
+    message.renderMessage(message);
+
+    const messageContainer = document.querySelector("#delete-message-container");
+    const cancelButton = document.querySelector("#message-cancel-button");
+    const confirmationButton = document.querySelector("#message-confirmation-button");
+    cancelButton.addEventListener('click', () => {
+        wrapper.removeChild(messageContainer);
+        return;
+    });
+
+    confirmationButton.addEventListener('click', () => {
+        wrapper.removeChild(messageContainer);
+        deleteActivity(id);
+    });
+}
+
 // Delete an activity
 const deleteActivity = async (id) => {
     try {
@@ -259,8 +277,11 @@ const deleteActivity = async (id) => {
         });
         destroyTableActivities(), getActivities();
     } catch (err) {
-        console.log(err.message)
+        console.error(err.message)
     }
+    // Instantiates the ConfirmationMessage class and uses it to render a message
+   const message = new ConfirmationMessage("Activity Deleted", `The activity with ID: ${id} has been deleted`, "Ok");
+   message.renderMessage(message);
 }
 
 // Clear all the values in the activities table

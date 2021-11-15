@@ -4,36 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
-    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/login.css">
+  
+    <title>Login</title>
 </head>
 <body>
-    <h1>Login</h1>
 
-    <ul>
-        <% if(messages.success_msg){ %>
-            <li><%= messages.success_msg %></li>
-        <% } %>
-    </ul>
+    <div id="login-container">
 
-    <ul>
-        <% if(messages.error) { %>
-            <li><%= messages.error %></li>
-        <% } %>
-    </ul>
+        <div id ="logo-container">
+            <img src="../styles/images/logo.svg" alt="Catering Management Logo">
+        </div>
+
+        <div>
+            <p>Please login with your credentials</p>
+        </div>
+
+        <form action="/users/login" method="POST">
+            <div>
+                <input type="email" id="user_email" name="user_email" placeholder="Email" required>
+            </div>
+            <div>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+            </div>
+            <div>
+                <input type="submit" value="Login">
+            </div>
+            <span>Not an user? <a href="/users/register">Register</a></span>
+        </form>
+
+        <ul>
+            <% if(messages.success_msg){ %>
+                <li><%= messages.success_msg %></li>
+            <% } %>
+        </ul>
     
-
-    <form action="/users/login" method="POST">
-        <div>
-            <input type="email" id="user_email" name="user_email" placeholder="Email" required>
-        </div>
-        <div>
-            <input type="password" id="password" name="password" placeholder="Password" required>
-        </div>
-        <div>
-            <input type="submit" value="Login">
-        </div>
-        <a href="/users/register">Register</a>
-    </form>
+        <ul>
+            <% if(messages.error) { %>
+                <li><%= messages.error %></li>
+            <% } %>
+        </ul>
+     
+    </div>
+    
 </body>
 </html>

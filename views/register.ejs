@@ -4,37 +4,54 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
-    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/register.css">
+    <title>Register</title>
 </head>
 <body>
-    <h1>Register</h1>
-    
-    <ul>
-        <% if(typeof errors != 'undefined'){ %>
-            <% errors.forEach(error =>{ %>
-                <li><%= error.message %></li>
-                <% }) %> 
-        <% } %>
-    </ul>
+    <div id="registration-container">
 
-    <form action="/users/register" method="POST">
-        <div>
-            <input type="text" id="name" name="name" placeholder="Name" required>
+        <div id="logo-container">
+            <img src="../styles/images/logo.svg" alt="Catering Management Logo">
         </div>
+
         <div>
-            <input type="email" id="email" name="email" placeholder="Email" required>
+            <p>Please enter the following information to register</p>
         </div>
+        
         <div>
-            <input type="password" id="password" name="password" placeholder="Password" required>
+            <form action="/users/register" method="POST">
+                <div>
+                    <input type="text" id="name" name="name" placeholder="Name" required>
+                </div>
+                <div>
+                    <input type="email" id="email" name="email" placeholder="Email" required>
+                </div>
+                <div>
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div>
+                    <input type="password" id="password2" name="password2" placeholder="Confirm Password" required>
+                </div>
+                <div>
+                    <input type="submit" value="Register" />
+                </div>
+
+                <ul>
+                    <% if(typeof errors != 'undefined'){ %>
+                        <% errors.forEach(error =>{ %>
+                            <li><%= error.message %></li>
+                            <% }) %> 
+                    <% } %>
+                </ul>
+            </form>
         </div>
+
         <div>
-            <input type="password" id="password2" name="password2" placeholder="Confirm Password" required>
+            <span>Already registered? <a href="/users/login">Login</a></span>
         </div>
-        <div>
-            <input type="submit" value="Register" />
-        </div>
-        <a href="/users/login">Already registered? Login</a>
-    </form>
+    </div>
 </body>
 </html>

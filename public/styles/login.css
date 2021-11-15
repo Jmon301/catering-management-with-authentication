@@ -1,0 +1,94 @@
+body, html{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#login-container{
+    width: 320px;
+    height: 560px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    color: #3D3D3D;
+    font-family: 'Noto Sans';
+    text-align: center;
+}
+
+#logo-container{
+    width: 130px;
+    height: 160px;
+}
+
+#logo-container svg{
+    width: 100%;
+    height: 100%;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 200px;
+}
+
+input{
+    width: 220px;
+    height: 2em;
+    padding: 0.2em 0.5em;
+    margin: 0.5em 0;
+    border-color: lightgrey;
+    border-width: thin;
+    border-radius: 6px;
+    text-align: center;
+}
+
+input::placeholder{
+    color: #B5B5B5;
+    font-family: 'Noto Sans';
+}
+
+form:last-child{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input[type=submit]{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 6.5em;
+    height: 2.5em;
+    font-family: 'Noto Sans';
+}
+
+input[type=submit]:hover{
+    cursor: pointer;
+}
+
+a:link, a:visited, a:active{
+    color: #1A6FC5;
+    text-decoration: none;
+}
+
+a:hover{
+    font-size: 102%;
+}
+
+ul{
+    list-style: none;
+    text-align: center;
+    padding: 0;
+}

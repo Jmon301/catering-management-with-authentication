@@ -1,0 +1,124 @@
+
+#main-container{
+    margin: auto;
+    padding: 3em;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 2vw 4vw;
+    height: 60vh;
+    width: 70vw;
+}
+
+#events-link-container, #recipes-link-container, #schedule-link-container, #tasks-link-container{
+    border-radius: 8px;
+    box-shadow: 3px 3px 3px #6D6D6D;
+    background: url("../styles/images/card-background.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#events-link-container:hover, #recipes-link-container:hover, #schedule-link-container:hover, #tasks-link-container:hover{
+    width: 101%;
+    height: 101%;
+    transform: translate(-5px, -5px);
+    transition-duration: 0.15s;
+    border-style: solid;
+    border-color: #1A6FC5;
+    border-width: thin;
+    box-shadow: 4px 4px 4px #6D6D6D;
+}
+
+#events-link-container h2, #recipes-link-container h2, #schedule-link-container h2, #tasks-link-container h2{
+    position: absolute;
+    z-index: 1;
+    margin-bottom: 5em;
+    font-family: 'Sitka Heading';
+}
+
+#events-link-container p, #recipes-link-container p, #schedule-link-container p, #tasks-link-container p{
+    position: absolute;
+    margin-top: 5em;
+    font-family: 'Noto sans';
+}
+
+.overlay-link{
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: relative;
+    z-index: 5;
+}
+
+#events-link-container{
+    grid-column: 1/3;
+    grid-row: 1/2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+}
+
+#events-link-container p{
+    width: 350px;
+    text-align: center;
+}
+
+#recipes-link-container{
+    grid-column: 1/2;
+    grid-row: 2/3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+}
+
+#recipes-link-container p{
+    width: 220px;
+    text-align: center;
+}
+
+#schedule-link-container{
+    grid-column: 2/3;
+    grid-row: 2/3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+}
+
+#schedule-link-container p{
+    width: 220px;
+    text-align: center;
+}
+
+#tasks-link-container{
+    grid-column: 3/4;
+    grid-row: 1/3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    width:100%;
+    height: 100%;
+}
+
+#tasks-link-container p{
+    width: 220px;
+    text-align: center;
+}
