@@ -485,6 +485,7 @@ td{
     margin: 0 auto;
     background-color: white;
     width: 90vw;
+    min-width: 400px;
     max-width: 90vw;
     max-height: 850px;
     padding: 1em;
@@ -507,7 +508,7 @@ td{
 #report-table{
     box-sizing: border-box;
     max-height: 800px;
-    width: 80vw;
+    width: 75vw;
     overflow: auto;
 }
 

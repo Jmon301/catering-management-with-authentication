@@ -348,7 +348,7 @@ a:link, a:active, a:visited{
 
     #navigation-bar-container{
         width: 95vw;
-        height: 90px;
+        height: 70px;
         box-sizing: border-box;
         padding: 0.5em 0;
         overflow: hidden;
@@ -364,8 +364,8 @@ a:link, a:active, a:visited{
     }
     
     #logo-container{
-        width: 80px;
-        height: 75px;
+        width: 70px;
+        height: 65px;
         margin-left: 1em;
         display: flex;
         justify-content: center;
@@ -377,7 +377,7 @@ a:link, a:active, a:visited{
     }
 
     .burger-menu{
-        width: 50px;
+        width: 40px;
         height: 30px;
         display: flex;
         flex-direction: column;
@@ -408,6 +408,9 @@ a:link, a:active, a:visited{
         height: 100vh;
         z-index: 7;
         background-color: white;
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
     }
 
     .invisible{
@@ -416,10 +419,10 @@ a:link, a:active, a:visited{
 
     .close-button-container{
         position: absolute;
-        width: 4em;
-        height: 4em;
-        top: 2em;
-        right: 2em;
+        width: 2em;
+        height: 2em;
+        top: 3em;
+        right: 3em;
     }
 
     .close-button-container:hover{
@@ -429,6 +432,11 @@ a:link, a:active, a:visited{
     .close-button-container svg{
         width: 100%;
         fill: #3D3D3D;
+    }
+
+    #small-navigation-items{
+        padding: 0;
+        margin: 0;
     }
 
     #small-navigation-items li{
@@ -482,12 +490,12 @@ a:link, a:active, a:visited{
     #delete-message-container{
         position: absolute;
         top: 25%;
-        left: 5%;
-        right: 5%;
+        left: 2%;
+        right: 2%;
         margin: 0 auto;
         background-color: white;
-        width: 340px;
-        height: 150px;
+        width: 300px;
+        height: 200px;
         padding: 1em 2em;
         z-index: 3;
         border-radius: 6px;
