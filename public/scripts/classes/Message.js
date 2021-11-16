@@ -47,7 +47,7 @@ class Message{
                 wrapper.removeChild(messageContainer);
                 destroyOverlay();
             }
-        }, 2000)
+        }, 3000)
     }
 }
 

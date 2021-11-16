@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../styles/images/logo-no-text.svg">
+    <title>Login</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/login.css">
-  
-    <title>Login</title>
+    <link rel="stylesheet" href="../styles/login.css">  
 </head>
 <body>
 
@@ -36,13 +36,13 @@
             <span>Not an user? <a href="/users/register">Register</a></span>
         </form>
 
-        <ul>
+        <ul class="login-messages">
             <% if(messages.success_msg){ %>
                 <li><%= messages.success_msg %></li>
             <% } %>
         </ul>
     
-        <ul>
+        <ul class="login-messages">
             <% if(messages.error) { %>
                 <li><%= messages.error %></li>
             <% } %>

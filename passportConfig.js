@@ -13,15 +13,16 @@ function initialize(passport){
                     const user = results.rows[0];
                     bcrypt.compare(password, user.password, (err, isMatch) => {
                         if(err){
-                            throw err
+                            throw err; 
                         }
                         if(isMatch){
-                            console.log(user)
                             return done(null, user);
                         }else{                            
-                            return done(null, false, {message: "Password is incorrect"})
+                            return done(null, false, {message: "Wrong credentials"});
                         }
                     })
+                }else{
+                    return done(null, false, {message: "Wrong credentials"});
                 }
             }
         )

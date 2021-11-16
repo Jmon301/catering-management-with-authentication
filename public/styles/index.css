@@ -1,5 +1,6 @@
-
-#main-container{
+/* Media queries big screens*/
+@media screen and (min-width: 1023px){
+.main-container{
     margin: auto;
     padding: 3em;
     display: grid;
@@ -20,6 +21,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    color: #3D3D3D;
 }
 
 #events-link-container:hover, #recipes-link-container:hover, #schedule-link-container:hover, #tasks-link-container:hover{
@@ -31,6 +33,7 @@
     border-color: #1A6FC5;
     border-width: thin;
     box-shadow: 4px 4px 4px #6D6D6D;
+    cursor: pointer;
 }
 
 #events-link-container h2, #recipes-link-container h2, #schedule-link-container h2, #tasks-link-container h2{
@@ -38,21 +41,13 @@
     z-index: 1;
     margin-bottom: 5em;
     font-family: 'Sitka Heading';
+    font-weight: bold;
 }
 
 #events-link-container p, #recipes-link-container p, #schedule-link-container p, #tasks-link-container p{
     position: absolute;
     margin-top: 5em;
     font-family: 'Noto sans';
-}
-
-.overlay-link{
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    position: relative;
-    z-index: 5;
 }
 
 #events-link-container{
@@ -121,4 +116,57 @@
 #tasks-link-container p{
     width: 220px;
     text-align: center;
+}
+
+}
+/**********************/
+
+/* Media queries small screens*/
+@media screen and (max-width: 1023px){
+    .main-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-y: auto;
+        margin-top: 2em;  
+    }
+
+    #events-link-container, #recipes-link-container, #schedule-link-container, #tasks-link-container{
+        width: 350px;
+        height: 250px;
+        padding: 1em 2em;
+        box-sizing: border-box;
+        border-radius: 8px;
+        box-shadow: 3px 3px 3px #6D6D6D;
+        background: url("../styles/images/card-background.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        color: #3D3D3D;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2em;
+    }
+
+    #events-link-container:hover, #recipes-link-container:hover, #schedule-link-container:hover, #tasks-link-container:hover{
+        cursor: pointer;
+    }
+
+    #events-link-container h2, #recipes-link-container h2, #schedule-link-container h2, #tasks-link-container h2{
+        font-family: 'Sitka Heading';
+        font-weight: bold;
+        text-align: center;
+    }
+
+    #events-link-container p, #recipes-link-container p, #schedule-link-container p, #tasks-link-container p{
+        font-family: 'Noto sans';
+        width: 250px;
+        text-align: center;
+    }
+
+ 
+
+
+
 }

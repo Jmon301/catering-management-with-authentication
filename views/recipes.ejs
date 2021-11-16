@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../styles/images/logo-no-text.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -36,6 +37,25 @@
                         <a href="/users/logout">Logout</a>
                     </ul>
                 </div>
+
+                <div class="burger-menu">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+    
+                <div class="small-navigation invisible">
+                    <div class="close-button-container">
+                        <img id="small-menu-close-button" src="../styles/images/close-button.svg" alt="Close Button">
+                    </div>
+                    <ul id="small-navigation-items">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/events">Events</a></li>
+                        <li><a href="/schedule">Schedule</a></li>
+                        <li><a href="/tasks">Tasks</a></li>
+                        <li><a href="/users/logout">Logout</a></li>
+                    </ul>
+                </div>
             </div>
 
             <div id="main-recipes-container">
@@ -52,7 +72,7 @@
 
             <div id="footer-container">
                 <div id="disclaimer-container">
-                    <p>All rights reserved Julian Montoya Franco</p>
+                    <p>All rights reserved Julian Montoya Franco - 2021</p>
                 </div>
                 <div id="social-container">
                     <ul>
@@ -67,6 +87,7 @@
         </div>
     </div>
     
+    <script src="../scripts/mobileMenu.js"></script>
     <script src="../scripts/classes/Message.js"></script>
     <script src="../scripts/recipes.js"></script>
 </body>

@@ -9,8 +9,8 @@ const getActivities = async () => {
         `<table id="table">
                 <thead>
                     <tr>
-                        <th>Activity</th>
-                        <th>Date and Time</th>
+                        <th id="activity-header">Activity</th>
+                        <th id="activity-date-time">Date and Time</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -46,12 +46,12 @@ const getActivities = async () => {
             const dateTime = document.createElement("td");
             dateTime.innerHTML = `${date} ${time}`;
 
-            const editActivityButton = document.createElement("button");
+            const editActivityButton = document.createElement("span");
             editActivityButton.innerHTML = "Edit";
             editActivityButton.className = "edit-activity-button";
             editActivityButton.id = item.activity_id;
 
-            const deleteActivityButton = document.createElement("button");
+            const deleteActivityButton = document.createElement("span");
             deleteActivityButton.innerHTML = "Delete";
             deleteActivityButton.className = "delete-activity-button";
             deleteActivityButton.id = item.activity_id;
@@ -68,6 +68,7 @@ const getActivities = async () => {
         allEditButtons.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
+                applyOverlay();
                 renderEditActivity(item.id);
             })
         });
@@ -76,6 +77,7 @@ const getActivities = async () => {
         allDeleteButtons.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
+                applyOverlay();
                 renderDeleteConfirmation(item.id);
             })
         });
@@ -100,6 +102,7 @@ const saveNewActivity = async () => {
         body: JSON.stringify(body)
     });
     destroyNewActivity();
+    destroyOverlay();
     getActivities();
     } catch (error) {
         console.error(error.message)
@@ -137,7 +140,7 @@ const renderEditActivity = async (activityId) => {
     editTitle.innerHTML = "Edit Activity";
     editActivityContainer.appendChild(editTitle);
 
-    const editActivityName = document.createElement("input");
+    const editActivityName = document.createElement("textarea");
     editActivityName.id = "edit-activity-name";
     editActivityName.type = "text";
     editActivityName.value = activityToEdit.activity_name;
@@ -147,36 +150,43 @@ const renderEditActivity = async (activityId) => {
     editDate.id = "edit-date";
     editDate.type = "date";
     editDate.value = date;
+    editDate.required = true;
     editActivityContainer.appendChild(editDate);
 
     const editTime = document.createElement("input");
     editTime.id = "edit-time";
     editTime.type = "time";
     editTime.value = time;
+    editTime.required = true;
     editActivityContainer.appendChild(editTime);
+
+    const butttonsContainer = document.createElement("div");
+    butttonsContainer.className = "create-buttons-container";
+    editActivityContainer.appendChild(butttonsContainer);
 
     const updateActivityButton = document.createElement("button");
     updateActivityButton.id = "update-activity-button";
     updateActivityButton.innerHTML = "Save";
-    editActivityContainer.appendChild(updateActivityButton);
+    butttonsContainer.appendChild(updateActivityButton);
 
     const cancelUpdate = document.createElement("button");
     cancelUpdate.id = "cancel-update-button";
     cancelUpdate.innerHTML = "Cancel";
-    editActivityContainer.appendChild(cancelUpdate);
+    butttonsContainer.appendChild(cancelUpdate);
 
     wrapper.appendChild(editActivityContainer);
 
     updateActivityButton.addEventListener('click', (e) => {
-       e.preventDefault();
-        updateActivity(activityId);
+        e.preventDefault();
+        // updateActivity(activityId);
+        inputValidation("update", activityId);
     });
 
     cancelUpdate.addEventListener('click', (e) => {
         e.preventDefault();
+        destroyOverlay();
         destroyEditContainer();
      });
-
 }
 
 // Updates the activity in the database
@@ -184,7 +194,7 @@ const updateActivity = async (id) => {
     const activity_name = document.querySelector("#edit-activity-name").value;
     const date = document.querySelector("#edit-date").value;
     const time = document.querySelector("#edit-time").value;
-    const date_time = `${date} ${time}:00`;
+    const date_time = `${date} ${time}`;
 
     try {      
         const body = {id, activity_name, date_time};
@@ -192,10 +202,10 @@ const updateActivity = async (id) => {
             method: "PUT",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(body)
-        }).then(() => {
-            destroyEditContainer();
-            getActivities();
         })
+        destroyEditContainer();
+        getActivities();
+        destroyOverlay();
     } catch (err) {
         console.error(err.message)
     }
@@ -213,7 +223,7 @@ const renderNewActivity = () => {
     newActivityTitle.innerHTML = "Create New Activity";
     newActivityContainer.appendChild(newActivityTitle);
 
-    const newActivityInput = document.createElement("input");
+    const newActivityInput = document.createElement("textarea");
     newActivityInput.id = "new-activity-input";
     newActivityInput.placeholder = "Create New Activity";
     newActivityContainer.appendChild(newActivityInput);
@@ -221,30 +231,38 @@ const renderNewActivity = () => {
     const newActivityDate = document.createElement("input");
     newActivityDate.id = "new-activity-date-input";
     newActivityDate.type = "date";
+    newActivityDate.required = true;
     newActivityContainer.appendChild(newActivityDate);
 
     const newActivityTime = document.createElement("input");
     newActivityTime.id = "new-activity-time-input";
     newActivityTime.type = "time";
+    newActivityTime.required = true;
     newActivityContainer.appendChild(newActivityTime);
+
+    const createActivitybuttonsContainer = document.createElement("div");
+    createActivitybuttonsContainer.className = "create-buttons-container";
+    newActivityContainer.appendChild(createActivitybuttonsContainer);
 
     const saveButton = document.createElement("button");
     saveButton.id = "save-activity-button";
     saveButton.innerHTML = "Save";
-    newActivityContainer.appendChild(saveButton);
+    createActivitybuttonsContainer.appendChild(saveButton);
 
     const cancelButton = document.createElement("button");
     cancelButton.id = "cancel-activity-button";
     cancelButton.innerHTML = "Cancel";
-    newActivityContainer.appendChild(cancelButton);
+    createActivitybuttonsContainer.appendChild(cancelButton);
 
     wrapper.appendChild(newActivityContainer);
 
     saveButton.addEventListener('click', () => {
-        saveNewActivity();
+        // saveNewActivity();
+        inputValidation("create");        
     })
 
     cancelButton.addEventListener('click', () => {
+        destroyOverlay();
         destroyNewActivity();
     })
 }
@@ -252,7 +270,7 @@ const renderNewActivity = () => {
 // Render the delete confirmation
 const renderDeleteConfirmation = async (id) => {
     // Instantiates the DeleteMessage class and uses it to render a message
-    const message = new DeleteMessage("Task Deletion", `Are you sure you want to delete this task?`, "Ok", "Cancel");
+    const message = new DeleteMessage("Activity Deletion", `Are you sure you want to delete this activity?`, "Ok", "Cancel");
     message.renderMessage(message);
 
     const messageContainer = document.querySelector("#delete-message-container");
@@ -260,6 +278,7 @@ const renderDeleteConfirmation = async (id) => {
     const confirmationButton = document.querySelector("#message-confirmation-button");
     cancelButton.addEventListener('click', () => {
         wrapper.removeChild(messageContainer);
+        destroyOverlay();
         return;
     });
 
@@ -310,8 +329,106 @@ const destroyEditContainer = () => {
 // Calls the function that renders the new activity container
 createActivityButton.addEventListener('click', (e) => {
     e.preventDefault();
+    applyOverlay();
     renderNewActivity();
 })
+
+// Apply an overlay to the background
+const applyOverlay = () => {
+    document.getElementById("sub-wrapper").classList.add("sub-wrapper-overlay")
+    document.getElementById("overlay").style.display = "block";
+}
+
+// Removes the overlay from the background
+const destroyOverlay = () => {
+    document.getElementById("sub-wrapper").classList.remove("sub-wrapper-overlay");
+    document.getElementById("overlay").style.display = "none";
+}
+
+
+// Validates that the important fields are not empty
+const inputValidation = (origin, id) => {
+    switch(origin){
+        case (origin = "create"):
+            if(
+                document.querySelector("#new-activity-input").value == '' ||
+                document.querySelector("#new-activity-date-input").value == '' ||
+                document.querySelector("#new-activity-time-input").value == ''
+                ){  
+                    // Disable buttons
+                    const buttons = document.querySelectorAll("button")
+                    buttons.forEach(item => {
+                        item.disabled = true;
+                    });
+
+                    const invalidInput = document.createElement("div");
+                    invalidInput.className = "invalid-input";
+                    const content = 
+                    `
+                        <h2>Invalid Input</h2>
+                        <p>Please make sure that all the required fields have been completed.</p>
+                        <button>Ok</button>
+                    `;
+                    invalidInput.innerHTML = content;
+                    wrapper.appendChild(invalidInput);
+
+                    document.getElementById("new-activity-container").classList.add("sub-wrapper-overlay");
+                    document.getElementById("overlay").style.display = "block";
+                    document.querySelector(".invalid-input button").addEventListener('click', () => {
+                        wrapper.removeChild(invalidInput);
+                        document.getElementById("new-activity-container").classList.remove("sub-wrapper-overlay");
+                        document.getElementById("overlay").style.display = "none";
+                        const buttons = document.querySelectorAll("button")
+                        buttons.forEach(item => {
+                            item.disabled = false;
+                        });
+                    })
+                }
+            else{
+                saveNewActivity();
+            }
+            break;
+        case(origin="update"):
+        if(
+            document.querySelector("#edit-activity-name").value == '' ||
+            document.querySelector("#edit-date").value == '' ||
+            document.querySelector("#edit-time").value == ''
+            ){  
+                // Disable buttons
+                const buttons = document.querySelectorAll("button")
+                buttons.forEach(item => {
+                    item.disabled = true;
+                });
+
+                const invalidInput = document.createElement("div");
+                invalidInput.className = "invalid-input";
+                const content = 
+                `
+                    <h2>Invalid Input</h2>
+                    <p>Please make sure that all the required fields have been completed.</p>
+                    <button>Ok</button>
+                `;
+                invalidInput.innerHTML = content;
+                wrapper.appendChild(invalidInput);
+
+                document.getElementById("edit-activity-container").classList.add("sub-wrapper-overlay");
+                document.getElementById("overlay").style.display = "block";
+                document.querySelector(".invalid-input button").addEventListener('click', () => {
+                    wrapper.removeChild(invalidInput);
+                    document.getElementById("edit-activity-container").classList.remove("sub-wrapper-overlay");
+                    document.getElementById("overlay").style.display = "none";
+                    const buttons = document.querySelectorAll("button")
+                    buttons.forEach(item => {
+                        item.disabled = false;
+                    });
+                })
+            }
+        else{
+            updateActivity(id);
+        }
+        break;
+    }
+}
 
 // Retrieves all the activities on start
 getActivities();

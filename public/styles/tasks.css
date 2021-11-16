@@ -1,4 +1,548 @@
-#main-tasks-container{
+/* Media queries for big screens */
+@media screen and (min-width: 1023px){
+    #main-tasks-container{
     width: 70vw;
     height: 65vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#main-tasks-container h1{
+    text-align: center;
+    font-family: 'Sitka Heading';
+    font-weight: bold;
+    margin: 0;
+    color: #3D3D3D;
+}
+
+#tasks-container{
+    width: 90vw;
+    height: 60vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+table{
+    margin-top: 1em;
+    width: 900px;
+    max-height: 95%;
+    border-radius: 6px;
+    box-shadow: 3px 3px 3px #3D3D3D;
+    border: 1px solid #3D3D3D;
+    overflow: auto;
+    color: #3D3D3D;
+    background-color: white;
+    padding: 1em;
+}
+
+th{
+    height: 1.5em;
+    font-family: "Sitka Heading";
+    font-weight: bold;
+    font-size: 120%;
+}
+
+td{
+    height: 1.5em;
+    font-family: "Noto Sans";
+    text-align: center;
+}
+
+#task-header{
+    width: 450px;
+}
+
+#assigned-cook-header{
+    width: 200px;
+}
+
+.buttons-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100px;
+    justify-content: space-between;
+}
+
+#create-task-button, #reports-button{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 12em;
+    height: 3em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+}
+
+#create-task-button:hover, #reports-button:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
+.complete-task-button{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 7em;
+    height: 2em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+    font-size: 70%;
+    margin-right: 1.5em;
+}
+
+.complete-task-button:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
+.edit-task-button, .delete-task-button{
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Noto Sans';
+}
+
+.edit-task-button{
+    color: #1A6FC5;
+    margin-right: 1.5em;
+}
+
+.delete-task-button{
+    color: #ff2020;
+}
+
+#new-task-container, #edit-task-container{
+    position: absolute;
+    top: 25%;
+    left: 10%;
+    right: 10%;
+    margin: 0 auto;
+    background-color: white;
+    width: 340px;
+    height: 250px;
+    padding: 1em;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 6px;
+    box-shadow: 3px 3px 3px #3D3D3D;
+    color: #3D3D3D;
+}
+
+#new-task-container h2, #edit-task-container h2{
+    font-family: 'Sitka Heading';
+}
+
+#new-task-container input, #edit-task-container input{
+    height: 2em;
+    width: 20em;
+    border-radius: 6px;
+    border-width: thin;
+    border-color: lightgrey;
+    border-width: thin;
+    text-align: center;
+    font-family: 'Noto Sans';
+    color: #3D3D3D;
+}
+
+#new-task-container textarea, #edit-task-container textarea{
+    height: 2em;
+    max-height: 8em;
+    min-height: 2em;
+    width: 18em;
+    max-width: 18em;
+    border-radius: 6px;
+    border-width: thin;
+    border-color: lightgrey;
+    border-width: thin;
+    text-align: center;
+    font-family: 'Noto Sans';
+    color: #3D3D3D;
+}
+
+#new-task-container input::placeholder, #edit-task-containerinput::placeholder{
+    text-align: center;
+    font-family: 'Noto Sans';
+    color: lightgrey;
+}
+
+.button-tasks-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 250px;
+}
+
+.button-tasks-container button{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 8em;
+    height: 2.5em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+}
+
+.button-tasks-container button:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
+#reports-container{
+    position: absolute;
+    top: 25%;
+    left: 10%;
+    right: 10%;
+    margin: 0 auto;
+    background-color: white;
+    width: 900px;
+    max-height: 850px;
+    padding: 1em;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 6px;
+    box-shadow: 3px 3px 3px #3D3D3D;
+    color: #3D3D3D;
+}
+
+#reports-container div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#reports-table{
+    max-height: 800px;
+    overflow: auto;
+}
+
+#reports-container h2{
+    font-family: 'Sitka Heading';
+    text-align: center;
+}
+
+.delete-completed-task-button{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 8em;
+    height: 2.5em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+}
+
+#close-report-button{
+    margin-top: 2em;
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 8em;
+    height: 2.5em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+}
+
+#close-report-button:hover, .delete-completed-task-button:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
+}
+
+/**********************/
+
+/* Media queries for small screens */
+@media screen and (max-width: 1023px){
+#main-tasks-container{
+    width: 90vw;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#main-tasks-container h1{
+    text-align: center;
+    font-family: 'Sitka Heading';
+    font-weight: bold;
+    margin-top: 1em;
+    color: #3D3D3D;
+}
+
+#tasks-container{
+    width: 90vw;
+    height: 50vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+table{
+    margin-top: 1em;
+    width: 90vw;
+    max-height: 95%;
+    border-radius: 6px;
+    box-shadow: 3px 3px 3px #3D3D3D;
+    border: 1px solid #3D3D3D;
+    overflow: auto;
+    color: #3D3D3D;
+    background-color: white;
+    padding: 0.5em;
+}
+
+    
+th{
+    height: 1.5em;
+    font-family: "Sitka Heading";
+    font-weight: bold;
+    font-size: 120%;
+}
+
+td{
+    height: 4em;
+    font-family: "Noto Sans";
+    text-align: center;
+    font-size: 80%;
+}
+
+#task-header{
+    width: 400px;
+}
+
+#assigned-cook-header{
+    width: 150px;
+}
+
+.buttons-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100px;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+#create-task-button, #reports-button{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 12em;
+    height: 3em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+}
+
+#create-task-button:hover, #reports-button:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
+.complete-task-button{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 7em;
+    height: 2em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+    font-size: 70%;
+}
+
+.complete-task-button:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
+.edit-task-button, .delete-task-button{
+    font-weight: bold;
+    cursor: pointer;
+    font-family: 'Noto Sans';
+    font-size: 80%;
+}
+
+.edit-task-button{
+    color: #1A6FC5;
+    margin-right: 1.5em;
+}
+
+.delete-task-button{
+    color: #ff2020;
+}
+
+#new-task-container, #edit-task-container{
+    position: absolute;
+    top: 25%;
+    left: 5%;
+    right: 5%;
+    margin: 0 auto;
+    background-color: white;
+    width: 340px;
+    height: 250px;
+    padding: 1em;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 6px;
+    box-shadow: 3px 3px 3px #3D3D3D;
+    color: #3D3D3D;
+}
+
+#new-task-container h2, #edit-task-container h2{
+    font-family: 'Sitka Heading';
+}
+
+#new-task-container input, #edit-task-container input{
+    height: 2em;
+    width: 20em;
+    border-radius: 6px;
+    border-width: thin;
+    border-color: lightgrey;
+    border-width: thin;
+    text-align: center;
+    font-family: 'Noto Sans';
+    color: #3D3D3D;
+}
+
+#new-task-container textarea, #edit-task-container textarea{
+    height: 2em;
+    max-height: 8em;
+    min-height: 2em;
+    width: 18em;
+    max-width: 18em;
+    border-radius: 6px;
+    border-width: thin;
+    border-color: lightgrey;
+    border-width: thin;
+    text-align: center;
+    font-family: 'Noto Sans';
+    color: #3D3D3D;
+}
+
+#new-task-container input::placeholder, #edit-task-containerinput::placeholder{
+    text-align: center;
+    font-family: 'Noto Sans';
+    color: lightgrey;
+}
+
+.button-tasks-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 250px;
+}
+
+.button-tasks-container button{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 8em;
+    height: 2.5em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+}
+
+.button-tasks-container button:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
+#reports-container{
+    position: absolute;
+    top: 25%;
+    left: 5%;
+    right: 5%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    background-color: white;
+    width: 90vw;
+    max-width: 90vw;
+    max-height: 850px;
+    padding: 1em;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 6px;
+    box-shadow: 3px 3px 3px #3D3D3D;
+    color: #3D3D3D;
+}
+
+#reports-container div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#report-table{
+    box-sizing: border-box;
+    max-height: 800px;
+    width: 80vw;
+    overflow: auto;
+}
+
+#reports-container h2{
+    font-family: 'Sitka Heading';
+    text-align: center;
+}
+
+.delete-completed-task-button{
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 7em;
+    height: 2.5em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+}
+
+#close-report-button{
+    margin-top: 2em;
+    color: #3D3D3D;
+    background-color: white;
+    border-radius: 6px;
+    box-shadow: 2px 2px 2px #888888;
+    width: 8em;
+    height: 2.5em;
+    font-family: 'Noto Sans';
+    font-weight: bold;
+}
+
+#close-report-button:hover, .delete-completed-task-button:hover{
+    cursor: pointer;
+    background-color: #3D3D3D;
+    color: white;
+}
+
 }

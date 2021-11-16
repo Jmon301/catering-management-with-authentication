@@ -91,7 +91,8 @@ const renderCreateEvent = () => {
 
     saveButton.addEventListener('click', (e) => {
         e.preventDefault();
-        saveNewEvent();
+        // saveNewEvent();
+        inputValidation("create");
     });
 
     cancelButton.addEventListener('click', (e) => {
@@ -166,7 +167,8 @@ const renderEditEvent = async (id) => {
 
     updateButton.addEventListener('click', (e) => {
         e.preventDefault();
-        updateEvent(id);
+        // updateEvent(id);
+        inputValidation("update", id);
     });
 
     cancelButton.addEventListener('click', (e) => {
@@ -290,6 +292,94 @@ createEventButton.addEventListener('click', (e) => {
     applyOverlay();
     renderCreateEvent();
 })
+
+// Validates that the important fields are not empty
+const inputValidation = (origin, id) => {
+    switch(origin){
+        case (origin = "create"):
+            if(
+                document.querySelector("#new-event-name").value == '' ||
+                document.querySelector("#new-event-guests").value == '' ||
+                document.querySelector("#new-event-date").value == '' ||
+                document.querySelector("#new-event-time").value == '' ||
+                document.querySelector("#new-event-cuisine").value == ''
+                ){  
+                    // Disable buttons
+                    const buttons = document.querySelectorAll("button")
+                    buttons.forEach(item => {
+                        item.disabled = true;
+                    });
+
+                    const invalidInput = document.createElement("div");
+                    invalidInput.className = "invalid-input";
+                    const content = 
+                    `
+                        <h2>Invalid Input</h2>
+                        <p>Please make sure that all the required fields have been completed.</p>
+                        <button>Ok</button>
+                    `;
+                    invalidInput.innerHTML = content;
+                    wrapper.appendChild(invalidInput);
+
+                    document.getElementById("new-event-container").classList.add("sub-wrapper-overlay");
+                    document.getElementById("overlay").style.display = "block";
+                    document.querySelector(".invalid-input button").addEventListener('click', () => {
+                        wrapper.removeChild(invalidInput);
+                        document.getElementById("new-event-container").classList.remove("sub-wrapper-overlay");
+                        document.getElementById("overlay").style.display = "none";
+                        const buttons = document.querySelectorAll("button")
+                        buttons.forEach(item => {
+                            item.disabled = false;
+                        });
+                    })
+                }
+            else{
+                saveNewEvent();
+            }
+            break;
+        case(origin="update"):
+        if(
+            document.querySelector("#edit-event-name").value == '' ||
+            document.querySelector("#edit-guests-number").value == '' ||
+            document.querySelector("#edit-date").value == '' ||
+            document.querySelector("#edit-time").value == '' ||
+            document.querySelector("#edit-cuisine").value == ''
+            ){  
+                // Disable buttons
+                const buttons = document.querySelectorAll("button")
+                buttons.forEach(item => {
+                    item.disabled = true;
+                });
+
+                const invalidInput = document.createElement("div");
+                invalidInput.className = "invalid-input";
+                const content = 
+                `
+                    <h2>Invalid Input</h2>
+                    <p>Please make sure that all the required fields have been completed.</p>
+                    <button>Ok</button>
+                `;
+                invalidInput.innerHTML = content;
+                wrapper.appendChild(invalidInput);
+
+                document.getElementById("edit-event-container").classList.add("sub-wrapper-overlay");
+                document.getElementById("overlay").style.display = "block";
+                document.querySelector(".invalid-input button").addEventListener('click', () => {
+                    wrapper.removeChild(invalidInput);
+                    document.getElementById("edit-event-container").classList.remove("sub-wrapper-overlay");
+                    document.getElementById("overlay").style.display = "none";
+                    const buttons = document.querySelectorAll("button")
+                    buttons.forEach(item => {
+                        item.disabled = false;
+                    });
+                })
+            }
+        else{
+            updateEvent(id);
+        }
+        break;
+    }
+}
 
 // Retrieves all events on start
 getAllEvents();

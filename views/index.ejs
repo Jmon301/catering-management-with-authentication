@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../styles/images/logo-no-text.svg">
     <title>Catering Management</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +13,7 @@
     <link rel="stylesheet" href="../styles/index.css">
 </head>
 <body>
-    <div id="wrapper">
+    <div id="wrapper" class="wrapper">
         <div id="navigation-bar-container">
             <div id="logo-container">
                 <img id="logo" src="../styles/images/logo-no-text.svg" alt="Logo">
@@ -30,27 +31,45 @@
                     <a href="/users/logout">Logout</a>
                 </ul>
             </div>
+
+            <div class="burger-menu">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+            <div class="small-navigation invisible">
+                <div class="close-button-container">
+                    <img id="small-menu-close-button" src="../styles/images/close-button.svg" alt="Close Button">
+                </div>
+                <ul id="small-navigation-items">
+                    <li><a href="/events">Events</a></li>
+                    <li><a href="/recipes">Recipes</a></li>
+                    <li><a href="/schedule">Schedule</a></li>
+                    <li><a href="/tasks">Tasks</a></li>
+                    <li><a href="/users/logout">Logout</a></li>
+                </ul>
+            </div>
         </div>
 
-        <div id="main-container">
-            <div id="events-link-container">
-                <a href="/events" class="overlay-link">
+        <div id="main-container" class="main-container">
+            <div id="events-link-container"> 
                 <h2><a href="/events">Events</a></h2>
                 <p>Create a list of events. Add dates, number of guests, type of cuisine, and any note you consider relevant for the event.</p>
-                </a>
+                <!-- <a href="/events" class="overlay-link"></a> -->
             </div>
             <div id="recipes-link-container">
-                <a href="/recipes" class="overlay-link"></a>
+                <!-- <a href="/recipes" class="overlay-link"></a> -->
                 <h2><a href="/recipes">Recipes</a></h2>
                 <p>Manage all of your recipes. Create, edit, delete and review all the recipes you need.</p>
             </div>
             <div id="schedule-link-container">
-                <a href="/schedule" class="overlay-link"></a>
+                <!-- <a href="/schedule" class="overlay-link"></a> -->
                 <h2><a href="/schedule">Schedule</a></h2>
                 <p>Create a schedule of all the activities you need in order to run your kitchen efficiently.</p>
             </div>
             <div id="tasks-link-container">
-                <a href="/tasks" class="overlay-link"></a>
+                <!-- <a href="/tasks" class="overlay-link"></a> -->
                 <h2><a href="/tasks">Tasks</a></h2>
                 <p>Control your work assignation. Create and assign tasks to your staff.</p>
             </div>
@@ -70,9 +89,8 @@
                 </ul>
             </div>
         </div>
-
     </div>
-
-
+    <script src="../scripts/index.js"></script>
+<script src="../scripts/mobileMenu.js"></script>
 </body>
 </html>

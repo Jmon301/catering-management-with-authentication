@@ -75,6 +75,10 @@ input[type=submit]{
 }
 
 input[type=submit]:hover{
+    color: white;
+    background-color: #3D3D3D;
+    text-decoration: none;
+    box-shadow: 3px 3px 5px #6D6D6D;
     cursor: pointer;
 }
 
@@ -91,4 +95,5 @@ ul{
     list-style: none;
     text-align: center;
     padding: 0;
+    color: #ff2020;
 }

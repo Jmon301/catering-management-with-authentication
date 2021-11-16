@@ -1,3 +1,6 @@
+/* Media queries for big screens */
+@media screen and (min-width: 1023px){
+
 #main-events-container{
     width: 70vw;
     height: 75vh;
@@ -13,6 +16,7 @@
     font-family: 'Sitka Heading';
     font-weight: bold;
     margin: 0;
+    color: #3D3D3D;
 }
 
 #events-container{
@@ -113,23 +117,11 @@
     color: white;
 }
 
-/* #overlay {
-    position: fixed; 
-    display: none; 
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(116, 116, 116, 0.315); 
-    filter: blur(10px);
-    z-index: 2; 
-} */
-
 #new-event-container{
     position: absolute;
     top: 25%;
+    left: 10%;
+    right: 10%;
     margin: 0 auto;
     background-color: white;
     width: 340px;
@@ -229,85 +221,236 @@ input::placeholder, textarea::placeholder{
     color: white;
 }
 
-#delete-message-container{
-    position: absolute;
-    top: 25%;
-    margin: 0 auto;
-    background-color: white;
-    width: 340px;
-    height: 150px;
-    padding: 1em 2em;
-    z-index: 3;
-    border-radius: 6px;
-    box-shadow: 3px 3px 3px #3D3D3D;
 }
 
-#delete-message-container h2{
-    color: #3D3D3D;
-    font-family: 'Sitka Heading';
+/**********************/
 
-}
+/* Media queries for small screens */
+@media screen and (max-width: 1023px){
+    #main-events-container{
+        width: 80vw;
+        height: 75vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        color: #3D3D3D;
+    }
 
-#delete-message-container p{
-    color: #3D3D3D;
-    font-family: 'Noto Sans';
+    #main-events-container h1{
+        text-align: center;
+        font-family: 'Sitka Heading';
+        font-weight: bold;
+        margin: 0;
+        color: #3D3D3D;
+        margin-top: 1em;
+    }
 
-}
+    #events-container{
+        width: 90vw;
+        height: 60vh;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 30px;
+    }
 
-#message-buttons button{
-    color: #3D3D3D;
-    background-color: white;
-    border-radius: 6px;
-    box-shadow: 2px 2px 2px #888888;
-    width: 6em;
-    height: 2em;
-    font-family: 'Noto Sans';
-    margin-top: 0.5em;
-    margin-right: 1em;
-}
+    #event-container{
+        width: 200px;
+        height: 260px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-family: 'Noto Sans';
+        padding: 0.5em 1.5em;
+        box-shadow: 3px 3px 3px #3D3D3D;
+        border-radius: 6px;
+        overflow: hidden; 
+        font-size: 90%;  
+    }
 
-#message-buttons button:hover{
-    cursor: pointer;
-    background-color: #3D3D3D;
-    color: white;
-}
+    #event-container:hover{
+        transition-duration: 0.15s;
+        border-style: solid;
+        border-color: #1A6FC5;
+        border-width: thin;
+        border-radius: 6px;
+        box-shadow: 4px 4px 4px #6D6D6D;
+    }
 
-#message-container{
-    position: absolute;
-    top: 25%;
-    margin: 0 auto;
-    background-color: white;
-    width: 340px;
-    height: 150px;
-    padding: 1em 2em;
-    z-index: 3;
-    border-radius: 6px;
-    box-shadow: 3px 3px 3px #3D3D3D;
-}
+    #event-container h2{
+        font-size: 1.5em;
+        font-weight: bold;
+        text-align: center;
+        font-family: 'Sitka Heading';
+        color: #3D3D3D;
+    }
+    
+    #event-container p{
+        font-family: 'Noto Sans';
+        font-weight: bold;
+        text-align: left;
+        margin: 0.2em;
+        color: #3D3D3D;
+        max-height: 80px;
+        overflow: auto;
+    }
 
-#message-container h2{
-    color: #3D3D3D;
-    font-family: 'Sitka Heading';
-}
+    #event-container span{
+        font-weight: lighter;
+    }
 
-#message-container p{
-    color: #3D3D3D;
-    font-family: 'Noto Sans';
-}
+    #event-info{
+        height: 180px;
+    }
 
-#message-container button{
-    color: #3D3D3D;
-    background-color: white;
-    border-radius: 6px;
-    box-shadow: 2px 2px 2px #888888;
-    width: 6em;
-    height: 2em;
-    font-family: 'Noto Sans';
-    margin-top: 0.5em;
-}
+    #event-buttons{
+        display: flex;
+        justify-content: flex-end;
+    }
+    
+    .edit-event-button, .delete-event-button{
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .edit-event-button{
+        color: #1A6FC5;
+        margin-right: 0.8em;
+        margin-bottom: 0.5em;
+    }
+    
+    .delete-event-button{
+        color: #FE5555;
+    }
 
-#message-container button:hover{
-    cursor: pointer;
-    background-color: #3D3D3D;
-    color: white;
+    #create-event-button{
+        color: #3D3D3D;
+        background-color: white;
+        border-radius: 6px;
+        box-shadow: 2px 2px 2px #888888;
+        width: 12em;
+        height: 3em;
+        font-family: 'Noto Sans';
+        font-weight: bold;
+        margin: 1em 0;
+    }
+
+    #create-event-button:hover{
+        cursor: pointer;
+        background-color: #3D3D3D;
+        color: white;
+    }
+
+    #new-event-container{
+        position: absolute;
+        top: 10%;
+        left: 10%;
+        right: 10%; 
+        margin: 0 auto;
+        background-color: white;
+        width: 340px;
+        height: 450px;
+        padding: 1em;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 6px;
+        box-shadow: 3px 3px 3px #3D3D3D;
+    }
+
+    #edit-event-container{
+        position: absolute;
+        top: 10%;
+        left: 10%;
+        right: 10%; 
+        margin: 0 auto;
+        background-color: white;
+        width: 340px;
+        height: 450px;
+        padding-top: 1em;
+        padding-bottom: 2em;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 6px;
+        box-shadow: 3px 3px 3px #3D3D3D;
+    }
+    
+    #new-event-container h2, #edit-event-container h2{
+        font-family: 'Sitka Heading';
+        font-weight: bold;
+        text-align: center;
+        color: #3D3D3D;
+    }
+    
+    input{
+        display: block;
+        height: 2em;
+        width: 15em;
+        border-radius: 6px;
+        border-width: thin;
+        border-color: lightgrey;
+        border-width: thin;
+        text-align: center;
+        margin: 1em 0;
+        font-family: 'Noto Sans';
+        color: #3D3D3D;
+    }
+    
+    #new-event-notes, #edit-event-notes{
+        display: block;
+        width: 15em;
+        max-width: 15em;
+        min-width: 15em;
+        min-height: 2em;
+        max-height: 8em;
+        border-radius: 6px;
+        border-width: thin;
+        border-color: lightgrey;
+        border-width: thin;
+        text-align: left;
+        margin: 1em 0;
+        padding-top: 5px;
+        font-family: 'Noto Sans';
+        color: #3D3D3D;
+    }
+    
+    input::placeholder, textarea::placeholder{
+        color: #B5B5B5;
+        font-family: 'Noto Sans';
+        text-align: center;
+    }
+    
+    #new-event-buttons span, #edit-event-buttons span{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 14em;
+        box-sizing: border-box;
+    }
+    
+    #new-event-buttons button, #edit-event-buttons button{
+        color: #3D3D3D;
+        background-color: white;
+        border-radius: 6px;
+        box-shadow: 2px 2px 2px #888888;
+        width: 6em;
+        height: 2em;
+        font-family: 'Noto Sans';
+    }
+    
+    #new-event-buttons button:hover, #edit-event-buttons button:hover{
+        cursor: pointer;
+        background-color: #3D3D3D;
+        color: white;
+    }
 }

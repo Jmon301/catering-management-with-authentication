@@ -355,7 +355,8 @@ const renderEditRecipe = () => {
     // Detects a click to update a recipe
     updateButton.addEventListener('click', (e) => {
         e.preventDefault();
-        editRecipe(recipeId);
+        // editRecipe(recipeId);
+        inputValidation("update", recipeId);
     })
 
     // Detects a click to update a recipe
@@ -577,7 +578,8 @@ const renderNewRecipe = () => {
         // Detects a click to save a recipe
         saveRecipeButton.addEventListener('click', (e) => {
             e.preventDefault();
-            createRecipe();
+            // createRecipe();
+            inputValidation("create", 0);
         });
 
         // Detects a click to cancel the creation of the new recipe
@@ -697,13 +699,13 @@ const renderDeleteConfirmation = async (id) => {
     const confirmationButton = document.querySelector("#message-confirmation-button");
     cancelButton.addEventListener('click', () => {
         wrapper.removeChild(messageContainer);
+        destroyOverlay();
         return;
     });
 
     confirmationButton.addEventListener('click', () => {
         wrapper.removeChild(messageContainer);
         deleteRecipe(id);
-        destroyOverlay();
     });
 }
 
@@ -764,7 +766,7 @@ const addEditedInstructions = async (instruction, recipe_id, instruction_id) => 
         method: "PUT",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(body)
-    }).then(()=> destroyNewRecipeContainer(), destroyResults(), getRecipes());
+    })
     } catch (error) {
         console.error(error.message)
     }
@@ -806,7 +808,10 @@ const editRecipe = async (recipe_id) => {
             addEditedIngredientContainers(recipe_id);
             addEditedInstructionContainers(recipe_id);
             destroyEditContainer();
+            destroyNewRecipeContainer()
             destroyOverlay();
+            destroyResults()
+            getRecipes();
         });
     } catch (err) {
         console.error(err.message)
@@ -1026,8 +1031,13 @@ const searchRecipes = async (searchTerm) =>{
     if(filteredRecipes.length > 0){
         searchResults(filteredRecipes);
         return
+    }else{
+        results.innerHTML = '';
+        const noResults = document.createElement("p");
+        noResults.className = "no-results";
+        noResults.innerHTML = "Sorry... Your search did not produce any results";
+        results.appendChild(noResults);
     }
-    results.innerHTML = "Sorry... Your search did not produce any results";
 };
 
 // Detects a key stroke and search through the recipe object that was fetched from the database
@@ -1050,6 +1060,90 @@ const applyOverlay = () => {
 const destroyOverlay = () => {
     document.getElementById("sub-wrapper").classList.remove("sub-wrapper-overlay");
     document.getElementById("overlay").style.display = "none";
+}
+
+// Validates that the important fields are not empty
+const inputValidation = (origin, id) => {
+    switch(origin){
+        case (origin = "create"):
+            if(
+                (document.querySelector("#recipe-name").value == '') ||
+                document.querySelector("#recipe-description").value == '' ||
+                document.querySelector("#recipe-cuisine").value == ''
+                ){  
+                    // Disable buttons
+                    const buttons = document.querySelectorAll("button")
+                    buttons.forEach(item => {
+                        item.disabled = true;
+                    });
+
+                    const invalidInput = document.createElement("div");
+                    invalidInput.className = "invalid-input";
+                    const content = 
+                    `
+                        <h2>Invalid Input</h2>
+                        <p>Please make sure that all the required fields have been completed.</p>
+                        <button>Ok</button>
+                    `;
+                    invalidInput.innerHTML = content;
+                    wrapper.appendChild(invalidInput);
+
+                    document.getElementById("new-recipe-container").classList.add("sub-wrapper-overlay");
+                    document.getElementById("overlay").style.display = "block";
+                    document.querySelector(".invalid-input button").addEventListener('click', () => {
+                        wrapper.removeChild(invalidInput);
+                        document.getElementById("new-recipe-container").classList.remove("sub-wrapper-overlay");
+                        document.getElementById("overlay").style.display = "none";
+                        const buttons = document.querySelectorAll("button")
+                        buttons.forEach(item => {
+                            item.disabled = false;
+                        });
+                    })
+                }
+            else{
+                createRecipe();
+            }
+            break;
+        case(origin="update"):
+        if(
+            (document.querySelector("#edit-recipe-name").value == '') ||
+            document.querySelector("#edit-recipe-description").value == '' ||
+            document.querySelector("#edit-recipe-cuisine").value == ''
+            ){  
+                // Disable buttons
+                const buttons = document.querySelectorAll("button")
+                buttons.forEach(item => {
+                    item.disabled = true;
+                });
+
+                const invalidInput = document.createElement("div");
+                invalidInput.className = "invalid-input";
+                const content = 
+                `
+                    <h2>Invalid Input</h2>
+                    <p>Please make sure that all the required fields have been completed.</p>
+                    <button>Ok</button>
+                `;
+                invalidInput.innerHTML = content;
+                wrapper.appendChild(invalidInput);
+
+                document.getElementById("edit-container").classList.add("sub-wrapper-overlay");
+                document.getElementById("overlay").style.display = "block";
+                document.querySelector(".invalid-input button").addEventListener('click', () => {
+                    wrapper.removeChild(invalidInput);
+                    document.getElementById("edit-container").classList.remove("sub-wrapper-overlay");
+                    document.getElementById("overlay").style.display = "none";
+                    const buttons = document.querySelectorAll("button")
+                    buttons.forEach(item => {
+                        item.disabled = false;
+                    });
+                })
+            }
+        else{
+            editRecipe(id);
+        }
+        break;
+    }
 }
 
 // Get recipes on start

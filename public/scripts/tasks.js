@@ -10,8 +10,8 @@ const getTasks = async () => {
         `<table id="table">
                 <thead>
                     <tr>
-                        <th>Task</th>
-                        <th>Assigned Cook</th>
+                        <th id="task-header">Task</th>
+                        <th id="assigned-cook-header">Assigned Cook</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
@@ -34,7 +34,6 @@ const getTasks = async () => {
                 return;
             }
             const newRow = document.createElement("tr");
-
             const taskName = document.createElement("td");
             taskName.innerHTML = item.task_name;
 
@@ -46,12 +45,12 @@ const getTasks = async () => {
             completeTaskButton.className = "complete-task-button";
             completeTaskButton.id = item.task_id;
 
-            const editTaskButton = document.createElement("button");
+            const editTaskButton = document.createElement("span");
             editTaskButton.innerHTML = "Edit";
             editTaskButton.className = "edit-task-button";
             editTaskButton.id = item.task_id;
 
-            const deleteTaskButton = document.createElement("button");
+            const deleteTaskButton = document.createElement("span");
             deleteTaskButton.innerHTML = "Delete";
             deleteTaskButton.className = "delete-task-button";
             deleteTaskButton.id = item.task_id;
@@ -77,6 +76,7 @@ const getTasks = async () => {
         allEditButtons.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
+                applyOverlay();
                 renderEditTask(item.id);
             })
         });
@@ -85,6 +85,7 @@ const getTasks = async () => {
         allDeleteButtons.forEach(item => {
             item.addEventListener('click', (e) => {
                 e.preventDefault();
+                applyOverlay();
                 renderDeleteConfirmation(item.id);
             })
         });
@@ -121,7 +122,6 @@ const saveNewTask = async () => {
     // Instantiates the ConfirmationMessage class and uses it to render a message
     const message = new ConfirmationMessage("New Task", `The task ${task_name} has been created`, "Ok");
     message.renderMessage(message);
-
 }
 
 // Retrieves the task to edit
@@ -137,6 +137,7 @@ const getTaskToEdit = async (id) => {
 
 // Renders the task edition section
 const renderEditTask = async (taskId) => {
+    applyOverlay();
     destroyNewTask();
     destroyEditContainer();
 
@@ -153,32 +154,40 @@ const renderEditTask = async (taskId) => {
     const editTaskName = document.createElement("input");
     editTaskName.id = "edit-task-name";
     editTaskName.value = taskToEdit.task_name;
+    editTaskName.required = true;
     editTaskContainer.appendChild(editTaskName);
 
     const editAssignedCook = document.createElement("input");
     editAssignedCook.id = "edit-assigned-cook";
     editAssignedCook.value = taskToEdit.assigned_cook;
+    editAssignedCook.required = true;
     editTaskContainer.appendChild(editAssignedCook);
+
+    const buttonTasksContainer = document.createElement("div");
+    buttonTasksContainer.className = "button-tasks-container";
+    editTaskContainer.appendChild(buttonTasksContainer);
 
     const updateTaskButton = document.createElement("button");
     updateTaskButton.id = "update-task-button";
     updateTaskButton.innerHTML = "Save";
-    editTaskContainer.appendChild(updateTaskButton);
+    buttonTasksContainer.appendChild(updateTaskButton);
 
     const cancelUpdate = document.createElement("button");
     cancelUpdate.id = "cancel-update-button";
     cancelUpdate.innerHTML = "Cancel";
-    editTaskContainer.appendChild(cancelUpdate);
+    buttonTasksContainer.appendChild(cancelUpdate);
 
     wrapper.appendChild(editTaskContainer);
 
     updateTaskButton.addEventListener('click', (e) => {
        e.preventDefault();
-        updateTask(taskId);
+    //    updateTask(taskId);
+        inputValidation("update", taskId);
     });
 
-    cancelUpdate.addEventListener('click', () => {
+    cancelUpdate.addEventListener('click', (e) => {
         e.preventDefault();
+        destroyOverlay();
         destroyEditContainer();
      });
 
@@ -211,6 +220,7 @@ const updateTask = async (id) => {
 
 // Create a new task
 const createNewTask = () => {
+    applyOverlay();
     destroyNewTask();
     destroyEditContainer();
     destroyReports();
@@ -226,30 +236,38 @@ const createNewTask = () => {
     const newTaskInput = document.createElement("input");
     newTaskInput.id = "new-task-input";
     newTaskInput.placeholder = "Create New Task";
+    newTaskInput.required = true;
     newTaskContainer.appendChild(newTaskInput);
 
     const newTaskAssignedCook = document.createElement("input");
     newTaskAssignedCook.id = "new-assigned-cook-input";
     newTaskAssignedCook.placeholder = "Assigned Cook";
+    newTaskAssignedCook.required = true;
     newTaskContainer.appendChild(newTaskAssignedCook);
+
+    const buttonTasksContainer = document.createElement("div");
+    buttonTasksContainer.className = "button-tasks-container";
+    newTaskContainer.appendChild(buttonTasksContainer);
 
     const saveButton = document.createElement("button");
     saveButton.id = "save-task-button";
     saveButton.innerHTML = "Save";
-    newTaskContainer.appendChild(saveButton);
+    buttonTasksContainer.appendChild(saveButton);
 
     const cancelButton = document.createElement("button");
     cancelButton.id = "cancel-task-button";
     cancelButton.innerHTML = "Cancel";
-    newTaskContainer.appendChild(cancelButton);
+    buttonTasksContainer.appendChild(cancelButton);
 
     wrapper.appendChild(newTaskContainer);
 
     saveButton.addEventListener('click', () => {
-        saveNewTask();
+        // saveNewTask();
+        inputValidation("create");
     })
 
     cancelButton.addEventListener('click', () => {
+        destroyOverlay();
         destroyNewTask();
     })
 }
@@ -272,6 +290,7 @@ const completeTask = async (id) => {
 
 // Render the delete confirmation
 const renderDeleteConfirmation = async (id) => {
+    applyOverlay();
     // Instantiates the DeleteMessage class and uses it to render a message
     const message = new DeleteMessage("Task Deletion", `Are you sure you want to delete this task?`, "Ok", "Cancel");
     message.renderMessage(message);
@@ -281,6 +300,7 @@ const renderDeleteConfirmation = async (id) => {
     const confirmationButton = document.querySelector("#message-confirmation-button");
     cancelButton.addEventListener('click', () => {
         wrapper.removeChild(messageContainer);
+        destroyOverlay();
         return;
     });
 
@@ -299,7 +319,7 @@ const deleteTask = async (id) =>{
         destroyTableTasks(), getTasks();
     } catch (err) {
         console.error(err.message)
-    }
+    }    
     // Instantiates the ConfirmationMessage class and uses it to render a message
    const message = new ConfirmationMessage("Task Deleted", `The task with ID: ${id} has been deleted`, "Ok");
    message.renderMessage(message);
@@ -347,6 +367,7 @@ const getCompletedTasks = async () => {
 
 // Render the reports section
 const renderReports = async () => {
+    applyOverlay();
     const reportsContainer = document.createElement("div");
     reportsContainer.id = "reports-container";
     const content = 
@@ -401,7 +422,7 @@ const renderReports = async () => {
     const deleteButton = document.querySelectorAll(".delete-completed-task-button");
     deleteButton.forEach(item => {
         item.addEventListener('click', () => {
-            deleteTask(item.id);
+            deleteCompletedTask(item.id);
             destroyReports();
             renderReports();
         })
@@ -410,7 +431,19 @@ const renderReports = async () => {
     const closeButton = document.querySelector("#close-report-button");
     closeButton.addEventListener('click', () => {
         destroyReports();
+        destroyOverlay();
     })
+}
+
+// Delete task from the database
+const deleteCompletedTask = async (id) =>{
+    try {
+        const deleteTask = await fetch(`./deleteTask/${id}`, {
+            method: "DELETE"
+        });
+    } catch (err) {
+        console.error(err.message)
+    }    
 }
 
 // Removes the reports container
@@ -427,7 +460,102 @@ reportsButton.addEventListener('click', () => {
     destroyEditContainer();
     destroyNewTask();
     renderReports();
+    applyOverlay();
 })
+
+// Apply an overlay to the background
+const applyOverlay = () => {
+    document.getElementById("sub-wrapper").classList.add("sub-wrapper-overlay")
+    document.getElementById("overlay").style.display = "block";
+}
+
+// Removes the overlay from the background
+const destroyOverlay = () => {
+    document.getElementById("sub-wrapper").classList.remove("sub-wrapper-overlay");
+    document.getElementById("overlay").style.display = "none";
+}
+
+// Validates that the important fields are not empty
+const inputValidation = (origin, id) => {
+    switch(origin){
+        case (origin = "create"):
+            if(
+                document.querySelector("#new-task-input").value == '' ||
+                document.querySelector("#new-assigned-cook-input").value == ''
+                ){  
+                    // Disable buttons
+                    const buttons = document.querySelectorAll("button")
+                    buttons.forEach(item => {
+                        item.disabled = true;
+                    });
+
+                    const invalidInput = document.createElement("div");
+                    invalidInput.className = "invalid-input";
+                    const content = 
+                    `
+                        <h2>Invalid Input</h2>
+                        <p>Please make sure that all the required fields have been completed.</p>
+                        <button>Ok</button>
+                    `;
+                    invalidInput.innerHTML = content;
+                    wrapper.appendChild(invalidInput);
+
+                    document.getElementById("new-task-container").classList.add("sub-wrapper-overlay");
+                    document.getElementById("overlay").style.display = "block";
+                    document.querySelector(".invalid-input button").addEventListener('click', () => {
+                        wrapper.removeChild(invalidInput);
+                        document.getElementById("new-task-container").classList.remove("sub-wrapper-overlay");
+                        document.getElementById("overlay").style.display = "none";
+                        const buttons = document.querySelectorAll("button")
+                        buttons.forEach(item => {
+                            item.disabled = false;
+                        });
+                    })
+                }
+            else{
+                saveNewTask();
+            }
+            break;
+        case(origin="update"):
+        if(
+            document.querySelector("#edit-task-name").value == '' ||
+            document.querySelector("#edit-assigned-cook").value == ''
+            ){  
+                // Disable buttons
+                const buttons = document.querySelectorAll("button")
+                buttons.forEach(item => {
+                    item.disabled = true;
+                });
+
+                const invalidInput = document.createElement("div");
+                invalidInput.className = "invalid-input";
+                const content = 
+                `
+                    <h2>Invalid Input</h2>
+                    <p>Please make sure that all the required fields have been completed.</p>
+                    <button>Ok</button>
+                `;
+                invalidInput.innerHTML = content;
+                wrapper.appendChild(invalidInput);
+
+                document.getElementById("edit-task-container").classList.add("sub-wrapper-overlay");
+                document.getElementById("overlay").style.display = "block";
+                document.querySelector(".invalid-input button").addEventListener('click', () => {
+                    wrapper.removeChild(invalidInput);
+                    document.getElementById("edit-task-container").classList.remove("sub-wrapper-overlay");
+                    document.getElementById("overlay").style.display = "none";
+                    const buttons = document.querySelectorAll("button")
+                    buttons.forEach(item => {
+                        item.disabled = false;
+                    });
+                })
+            }
+        else{
+            updateTask(id);
+        }
+        break;
+    }
+}
 
 // Retrieves all the tasks on start
 getTasks();
