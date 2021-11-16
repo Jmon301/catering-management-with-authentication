@@ -340,6 +340,7 @@ a:link, a:active, a:visited{
         background-color: rgba(116, 116, 116, 0.315); 
         filter: blur(10px);
         z-index: 2; 
+        overflow: hidden;
     }
 
     #navigation-items-container, #logout-container{
@@ -364,8 +365,8 @@ a:link, a:active, a:visited{
     }
     
     #logo-container{
-        width: 70px;
-        height: 65px;
+        width: 50px;
+        height: 40px;
         margin-left: 1em;
         display: flex;
         justify-content: center;
@@ -377,8 +378,8 @@ a:link, a:active, a:visited{
     }
 
     .burger-menu{
-        width: 40px;
-        height: 30px;
+        width: 30px;
+        height: 25px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -391,7 +392,7 @@ a:link, a:active, a:visited{
     }
 
     .burger-menu div{
-        width: 40px;
+        width: 30px;
         height: 3px;
         background-color: #3D3D3D;
     }

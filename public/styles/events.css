@@ -3,7 +3,7 @@
 
 #main-events-container{
     width: 70vw;
-    height: 70vh;
+    height: 75vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -248,7 +248,7 @@ input::placeholder, textarea::placeholder{
 
     #events-container{
         width: 90vw;
-        height: 60vh;
+        height: 50vh;
         overflow-y: auto;
         scroll-behavior: smooth;
         display: flex;
