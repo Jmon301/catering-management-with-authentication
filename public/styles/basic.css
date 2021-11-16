@@ -6,7 +6,7 @@
     --text-color: #3D3D3D;
 }
 
-body, html{
+body{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -97,7 +97,7 @@ a:link, a:active, a:visited{
 #navigation-items{
     display: inline-flex;
     list-style: none;
-    font-family: 'Noto Serif Bold';
+    font-family: 'Noto Serif';
 }
 
 #navigation-items li{
@@ -188,7 +188,7 @@ a:link, a:active, a:visited{
 
 #delete-message-container h2{
     color: #3D3D3D;
-    font-family: 'Noto Serif Bold';
+    font-family: 'Noto Serif';
 
 }
 
@@ -233,7 +233,7 @@ a:link, a:active, a:visited{
 
 #message-container h2{
     color: #3D3D3D;
-    font-family: 'Noto Serif Bold';
+    font-family: 'Noto Serif';
 }
 
 #message-container p{
@@ -303,8 +303,8 @@ a:link, a:active, a:visited{
 
 /* Media queries for small screens */
 @media screen and (max-width: 1023px){
-    body, html{
-        margin: 0;
+    body{
+        margin: 0;  
         padding: 0;
         box-sizing: border-box;
         overflow-x: hidden;
@@ -340,6 +340,9 @@ a:link, a:active, a:visited{
         background-color: rgba(116, 116, 116, 0.315); 
         filter: blur(10px);
         z-index: 2; 
+    }
+
+    .lock-screen{
         overflow: hidden;
     }
 
@@ -442,7 +445,7 @@ a:link, a:active, a:visited{
 
     #small-navigation-items li{
         list-style: none;
-        font-family: 'Noto Serif Bold';
+        font-family: 'Noto Serif';
         font-size: 2em;
         padding: 1em 0;
         text-align: center;
@@ -505,7 +508,7 @@ a:link, a:active, a:visited{
     
     #delete-message-container h2{
         color: #3D3D3D;
-        font-family: 'Noto Serif Bold';
+        font-family: 'Noto Serif';
     }
     
     #delete-message-container p{
@@ -548,7 +551,7 @@ a:link, a:active, a:visited{
     
     #message-container h2{
         color: #3D3D3D;
-        font-family: 'Noto Serif Bold';
+        font-family: 'Noto Serif';
     }
     
     #message-container p{
