@@ -13,7 +13,7 @@ color: #3D3D3D;
 
 #main-recipes-container h1{
     text-align: center;
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     font-weight: bold;
     margin: 0;
     color: #3D3D3D;
@@ -86,7 +86,7 @@ color: #3D3D3D;
     font-size: 1.5em;
     font-weight: bold;
     text-align: center;
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     color: #3D3D3D;
 }
 
@@ -217,7 +217,7 @@ color: #3D3D3D;
 }
 
 #new-recipe-container h2, #edit-container h2{
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     font-weight: bold;
     text-align: center;
     color: #3D3D3D;
@@ -394,7 +394,7 @@ color: #3D3D3D;
 
 .details-container h2{
     text-align: center;
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     margin-bottom: 0.5em;
 }
 
@@ -435,7 +435,7 @@ color: #3D3D3D;
     
 #main-recipes-container h1{
     text-align: center;
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     font-weight: bold;
     margin-top: 1em;
     margin-bottom: 0;
@@ -510,7 +510,7 @@ color: #3D3D3D;
     font-size: 1.5em;
     font-weight: bold;
     text-align: center;
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     color: #3D3D3D;
 }
 
@@ -613,8 +613,10 @@ color: #3D3D3D;
     position: absolute;
     margin: 0 auto;
     top: 5%;
+    left: 5%;
+    right: 5%;
     background-color: white;
-    width: 500px;
+    width: 400px;
     max-height: 850px;
     padding: 2em;
     z-index: 3;
@@ -624,7 +626,7 @@ color: #3D3D3D;
 }
 
 #new-recipe-container h2, #edit-container h2{
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     font-weight: bold;
     text-align: center;
     color: #3D3D3D;
@@ -804,7 +806,7 @@ color: #3D3D3D;
 
 .details-container h2{
     text-align: center;
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     margin-bottom: 0.5em;
 }
 

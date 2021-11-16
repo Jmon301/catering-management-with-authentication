@@ -13,7 +13,7 @@
 
 #main-events-container h1{
     text-align: center;
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     font-weight: bold;
     margin: 0;
     color: #3D3D3D;
@@ -58,7 +58,7 @@
     font-size: 1.5em;
     font-weight: bold;
     text-align: center;
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     color: #3D3D3D;
 }
 
@@ -155,7 +155,7 @@
 }
 
 #new-event-container h2, #edit-event-container h2{
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     font-weight: bold;
     text-align: center;
     color: #3D3D3D;
@@ -239,7 +239,7 @@ input::placeholder, textarea::placeholder{
 
     #main-events-container h1{
         text-align: center;
-        font-family: 'Sitka Heading';
+        font-family: 'Noto Serif';
         font-weight: bold;
         margin: 0;
         color: #3D3D3D;
@@ -286,7 +286,7 @@ input::placeholder, textarea::placeholder{
         font-size: 1.5em;
         font-weight: bold;
         text-align: center;
-        font-family: 'Sitka Heading';
+        font-family: 'Noto Serif';
         color: #3D3D3D;
     }
     
@@ -386,7 +386,7 @@ input::placeholder, textarea::placeholder{
     }
     
     #new-event-container h2, #edit-event-container h2{
-        font-family: 'Sitka Heading';
+        font-family: 'Noto Serif';
         font-weight: bold;
         text-align: center;
         color: #3D3D3D;

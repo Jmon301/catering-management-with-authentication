@@ -40,7 +40,7 @@
     position: absolute;
     z-index: 1;
     margin-bottom: 5em;
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     font-weight: bold;
 }
 
@@ -154,7 +154,7 @@
     }
 
     #events-link-container h2, #recipes-link-container h2, #schedule-link-container h2, #tasks-link-container h2{
-        font-family: 'Sitka Heading';
+        font-family: 'Noto Serif';
         font-weight: bold;
         text-align: center;
     }

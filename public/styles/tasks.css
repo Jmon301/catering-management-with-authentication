@@ -10,7 +10,7 @@
 
 #main-tasks-container h1{
     text-align: center;
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     font-weight: bold;
     margin: 0;
     color: #3D3D3D;
@@ -42,7 +42,7 @@ table{
 
 th{
     height: 1.5em;
-    font-family: "Sitka Heading";
+    font-family: "Noto Serif";
     font-weight: bold;
     font-size: 120%;
 }
@@ -141,7 +141,7 @@ td{
 }
 
 #new-task-container h2, #edit-task-container h2{
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
 }
 
 #new-task-container input, #edit-task-container input{
@@ -233,7 +233,7 @@ td{
 }
 
 #reports-container h2{
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     text-align: center;
 }
 
@@ -282,7 +282,7 @@ td{
 
 #main-tasks-container h1{
     text-align: center;
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     font-weight: bold;
     margin-top: 1em;
     color: #3D3D3D;
@@ -315,7 +315,7 @@ table{
     
 th{
     height: 1.5em;
-    font-family: "Sitka Heading";
+    font-family: "Noto Serif";
     font-weight: bold;
     font-size: 120%;
 }
@@ -416,7 +416,7 @@ td{
 }
 
 #new-task-container h2, #edit-task-container h2{
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
 }
 
 #new-task-container input, #edit-task-container input{
@@ -513,7 +513,7 @@ td{
 }
 
 #reports-container h2{
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     text-align: center;
 }
 

@@ -11,7 +11,7 @@
 
 #main-schedule-container h1{
     text-align: center;
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
     font-weight: bold;
     margin: 0;
     color: #3D3D3D;
@@ -43,7 +43,7 @@ table{
 
 th{
     height: 1.5em;
-    font-family: "Sitka Heading";
+    font-family: "Noto Serif";
     font-weight: bold;
     font-size: 120%;
 }
@@ -113,7 +113,7 @@ td{
 }
 
 #new-activity-container h2, #edit-activity-container h2{
-    font-family: 'Sitka Heading';
+    font-family: 'Noto Serif';
 }
 
 #new-activity-container input, #edit-activity-container input{
@@ -190,7 +190,7 @@ td{
 
     #main-schedule-container h1{
         text-align: center;
-        font-family: 'Sitka Heading';
+        font-family: 'Noto Serif';
         font-weight: bold;
         margin: 0;
         color: #3D3D3D;
@@ -223,7 +223,7 @@ td{
 
     th{
         height: 1.5em;
-        font-family: "Sitka Heading";
+        font-family: "Noto Serif";
         font-weight: bold;
         font-size: 100%;
     }
@@ -281,7 +281,7 @@ td{
     }
     
     #new-activity-container h2, #edit-activity-container h2{
-        font-family: 'Sitka Heading';
+        font-family: 'Noto Serif';
     }
     
     #new-activity-container input, #edit-activity-container input{
