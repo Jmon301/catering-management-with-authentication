@@ -206,6 +206,8 @@ color: #3D3D3D;
     position: absolute;
     margin: 0 auto;
     top: 5%;
+    right: 10%;
+    left: 10%;
     background-color: white;
     width: 500px;
     max-height: 850px;
@@ -616,13 +618,14 @@ color: #3D3D3D;
     left: 5%;
     right: 5%;
     background-color: white;
-    width: 400px;
+    width: 350px;
     max-height: 850px;
     padding: 2em;
     z-index: 3;
     border-radius: 6px;
     box-shadow: 3px 3px 3px #3D3D3D;
     color:#3D3D3D;
+    box-sizing: border-box;
 }
 
 #new-recipe-container h2, #edit-container h2{

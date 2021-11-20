@@ -483,9 +483,9 @@ td{
     box-sizing: border-box;
     margin: 0 auto;
     background-color: white;
-    width: 90vw;
-    min-width: 400px;
-    max-width: 90vw;
+    width: 380px;
+    min-width: 380px;
+    max-width: 380px;
     max-height: 850px;
     padding: 1em;
     z-index: 3;
@@ -507,8 +507,9 @@ td{
 #report-table{
     box-sizing: border-box;
     max-height: 800px;
-    width: 75vw;
+    width: 300px;
     overflow: auto;
+    box-sizing: border-box;
 }
 
 #reports-container h2{
