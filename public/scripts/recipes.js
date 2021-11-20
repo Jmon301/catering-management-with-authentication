@@ -143,7 +143,6 @@ const addEditIngredientContainer = () => {
 // Add a new instruction inside the edit recipe container
 const addEditInstructionContainer = () => {
     const instructionsContainer = document.querySelector("#edit-instructions-container");
-
     const newInstructionContainer = document.createElement("div");
     newInstructionContainer.className = "edit-instruction-container";
 
@@ -355,7 +354,6 @@ const renderEditRecipe = () => {
     // Detects a click to update a recipe
     updateButton.addEventListener('click', (e) => {
         e.preventDefault();
-        // editRecipe(recipeId);
         inputValidation("update", recipeId);
     })
 
@@ -578,7 +576,6 @@ const renderNewRecipe = () => {
         // Detects a click to save a recipe
         saveRecipeButton.addEventListener('click', (e) => {
             e.preventDefault();
-            // createRecipe();
             inputValidation("create", 0);
         });
 
@@ -609,8 +606,9 @@ const renderNewRecipe = () => {
 
 // Add ingredients to the ingredients table in the database
 const addIngredients = async (quantity, measure, ingredient, recipe_id) => {
+    const newIngredient = new Ingredient(recipe_id, quantity, measure, ingredient);
     try {
-        const body = { recipe_id, quantity, measure, ingredient };
+        const body = newIngredient;
         const response  = await fetch("./addIngredients", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -634,8 +632,9 @@ const addIngredientContainers = (recipe_id) => {
 
 // Add instructions to the instructions table in the database
 const addInstructions = async (instruction, recipe_id) => {
+    const newInstruction = new Instruction(recipe_id, instruction);
     try {
-        const body = { recipe_id, instruction };
+        const body = newInstruction;
         const response  = await fetch("./addInstructions", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -668,9 +667,10 @@ const createRecipe = async (e) => {
     const recipe_description = document.querySelector("#recipe-description").value;
     const cuisine = document.querySelector("#recipe-cuisine").value;
     const notes = document.querySelector("#recipe-notes").value;
+    const newRecipe = new Recipe(recipe_name, recipe_description, cuisine, notes);
 
     try {
-        const body = { recipe_name, recipe_description, cuisine, notes };
+        const body = newRecipe;
         const response  = await fetch("./createRecipes", {
             method: "POST",
             headers: {"Content-Type": "application/json"},

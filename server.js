@@ -17,14 +17,11 @@ const PORT = process.env.PORT || 4000; // Use this for production environment. H
 app.use(cors());
 app.use(express.json());
 
-
-
 // Selects the templating engine, ejs
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended:false}));
 
 app.use(session({
-    // secret: 'secret',
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
@@ -38,6 +35,7 @@ app.use(flash());
 // Makes the folder public available
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Routes for login and register
 app.get('/', checkAuthenticated, (req, res) => {
     res.render('login')
 });
@@ -58,7 +56,7 @@ app.get('/users/dashboard', checkNotAuthenticated, (req, res) => {
 });
 
 app.get('/users/logout', (req, res) => {
-    req.logOut(); // This function comes from passport
+    req.logOut();
     req.flash('success_msg', 'You have logged out');
     res.redirect('/users/login');
 })
@@ -81,7 +79,6 @@ app.get('/tasks', checkNotAuthenticated, (req, res) => {
 });
 
 ///////////////////
-
 // Get all Recipes
 app.get("/getRecipes", async(req, res) => {
     try{    
@@ -175,9 +172,7 @@ app.delete("/recipes/:id", async (req, res) => {
         const deleteIngredients = await pool.query("DELETE FROM ingredients WHERE recipe_id = $1", [id])
         const deleteInstructions  = await pool.query("DELETE FROM instructions WHERE recipe_id = $1", [id])
         const deleteRecipe = await pool.query("DELETE FROM recipes WHERE recipe_id = $1", [id])
-        
         res.json("Recipe was deleted");
-        console.log(`Recipe with ID ${id} has been deletd`);
     } catch (err) {
         console.error(err.message)
     }
@@ -196,7 +191,6 @@ app.put("/recipes/:id", checkNotAuthenticated, async(req, res) => {
 
 // Update ingredients
 app.put("/updateIngredients/:id", checkNotAuthenticated, async(req, res) => {
-
     try {
         const { quantity, measure, ingredient, recipe_id, ingredient_id  } = req.body;
         const updateIngredient = await pool.query('UPDATE ingredients SET ingredient_name=$1, quantity=$2, measure=$3 WHERE ingredient_id=$4 RETURNING *', [ingredient, quantity, measure, ingredient_id])
@@ -285,7 +279,6 @@ app.get("/getCompletedTasks", async(req, res) => {
     }
 });
 
-
 // Delete a task
 app.delete("/deleteTask/:id", async (req, res) => {
     try {
@@ -296,7 +289,6 @@ app.delete("/deleteTask/:id", async (req, res) => {
         console.error(err.message)
     }
 })
-
 
 //////////////////////
 // ACTIVITIES
@@ -380,7 +372,6 @@ app.post("/addEvent", async (req, res)  => {
     }
 });
 
-
 // Get an event
 app.get("/getEvent/:id", async (req, res) => {
     try {
@@ -415,6 +406,7 @@ app.delete("/deleteEvent/:id", async (req, res) => {
 })
 
 ////////////////////////
+// Register
 
 app.post('/users/register', async (req, res) => {
     let{name, email, password, password2} = req.body;
@@ -438,7 +430,6 @@ app.post('/users/register', async (req, res) => {
                 if(err){
                     throw err
                 }
-                console.log(results.rows);
                 if(results.rows.length > 0){
                     errors.push({message:"Email already registered"})
                     res.render('register', {errors})
@@ -448,7 +439,6 @@ app.post('/users/register', async (req, res) => {
                             if(err){
                                 throw err
                             }
-                            console.log(results.rows);
                             req.flash('success_msg', 'You are now registered. Please log in');
                             res.redirect('/users/login');
                         }

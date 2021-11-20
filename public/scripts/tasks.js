@@ -95,19 +95,26 @@ const getTasks = async () => {
     }
 }
 
-// Stores a new task in the database
-const saveNewTask = async () => {
-    const task_name = document.querySelector("#new-task-input").value;
-    const assigned_cook = document.querySelector("#new-assigned-cook-input").value;
+const createTimeStamp = () => {
     const timeNow = Date.now();
     const timestampNow = new Date(timeNow);
     const date = timestampNow.toLocaleDateString();
     const time = timestampNow.toLocaleTimeString();
     const timestamp = `${date} ${time}`;
+    return timestamp;
+}
+
+// Stores a new task in the database
+const saveNewTask = async () => {
+    const task_name = document.querySelector("#new-task-input").value;
+    const assigned_cook = document.querySelector("#new-assigned-cook-input").value;
+    const timestamp = createTimeStamp();
     const completed = false;
 
+    const newTask = new Task(task_name, assigned_cook, timestamp, completed);
+
     try {
-        const body = { task_name, assigned_cook, timestamp, completed };
+        const body = newTask;
         const response  = await fetch("./addTask", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -181,7 +188,6 @@ const renderEditTask = async (taskId) => {
 
     updateTaskButton.addEventListener('click', (e) => {
        e.preventDefault();
-    //    updateTask(taskId);
         inputValidation("update", taskId);
     });
 
@@ -262,7 +268,6 @@ const createNewTask = () => {
     wrapper.appendChild(newTaskContainer);
 
     saveButton.addEventListener('click', () => {
-        // saveNewTask();
         inputValidation("create");
     })
 
@@ -423,8 +428,7 @@ const renderReports = async () => {
     deleteButton.forEach(item => {
         item.addEventListener('click', () => {
             deleteCompletedTask(item.id);
-            destroyReports();
-            renderReports();
+            
         })
     })
 
@@ -441,6 +445,8 @@ const deleteCompletedTask = async (id) =>{
         const deleteTask = await fetch(`./deleteTask/${id}`, {
             method: "DELETE"
         });
+        destroyReports();
+        renderReports();
     } catch (err) {
         console.error(err.message)
     }    

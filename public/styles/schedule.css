@@ -97,6 +97,8 @@ td{
 #new-activity-container, #edit-activity-container{
     position: absolute;
     top: 25%;
+    left: 10%;
+    right: 10%;
     margin: 0 auto;
     background-color: white;
     width: 340px;
@@ -172,9 +174,7 @@ td{
     background-color: #3D3D3D;
     color: white;
 }
-
 }
-
 
 /**********************/
 

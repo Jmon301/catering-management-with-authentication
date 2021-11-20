@@ -309,6 +309,7 @@ a:link, a:active, a:visited{
         box-sizing: border-box;
         overflow-x: hidden;
         overflow-y: auto;
+        background-color: #DEDEDE;
     }
 
     a:link, a:active, a:visited{
@@ -322,6 +323,7 @@ a:link, a:active, a:visited{
         display: flex;
         flex-direction: column;
         align-items: center;
+        background-color: #DEDEDE;
     }
 
     .sub-wrapper-overlay{

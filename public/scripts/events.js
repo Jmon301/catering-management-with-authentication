@@ -91,7 +91,6 @@ const renderCreateEvent = () => {
 
     saveButton.addEventListener('click', (e) => {
         e.preventDefault();
-        // saveNewEvent();
         inputValidation("create");
     });
 
@@ -112,8 +111,10 @@ const saveNewEvent = async () => {
     const cuisine = document.querySelector("#new-event-cuisine").value;
     const notes = document.querySelector("#new-event-notes").value;
 
+    const newEvent = new Event(event_name, number_guests, date_time, cuisine, notes);
+
     try {
-        const body = { event_name, number_guests, date_time, cuisine, notes};
+        const body = newEvent;
         const response  = await fetch("./addEvent", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -167,7 +168,6 @@ const renderEditEvent = async (id) => {
 
     updateButton.addEventListener('click', (e) => {
         e.preventDefault();
-        // updateEvent(id);
         inputValidation("update", id);
     });
 

@@ -140,6 +140,8 @@
     position: absolute;
     top: 25%;
     margin: 0 auto;
+    left: 10%;
+    right: 10%;
     background-color: white;
     width: 340px;
     height: 450px;

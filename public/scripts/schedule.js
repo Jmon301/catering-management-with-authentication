@@ -93,9 +93,10 @@ const saveNewActivity = async () => {
     const date = document.querySelector("#new-activity-date-input").value;
     const time = document.querySelector("#new-activity-time-input").value;
     const date_time = `${date} ${time}:00`;
+    const newActivity = new Activity(activity_name, date_time);
 
     try {
-        const body = { activity_name, date_time };
+        const body = newActivity;
         const response  = await fetch("./addActivity", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -257,7 +258,6 @@ const renderNewActivity = () => {
     wrapper.appendChild(newActivityContainer);
 
     saveButton.addEventListener('click', () => {
-        // saveNewActivity();
         inputValidation("create");        
     })
 
@@ -432,3 +432,6 @@ const inputValidation = (origin, id) => {
 
 // Retrieves all the activities on start
 getActivities();
+
+
+module.exports = getActivityToEdit;

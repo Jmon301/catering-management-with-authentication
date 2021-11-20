@@ -672,7 +672,6 @@ color: #3D3D3D;
 #ingredients-container, #instructions-container, #edit-ingredients-container, #edit-instructions-container{
     max-height: 150px;
     margin: 1em;
-    /* padding-right: 1em; */
     overflow: auto;
 }
 
@@ -762,7 +761,6 @@ color: #3D3D3D;
     width: 24em;
     height: 2em;
     display: inline;
-    /* margin-right: 1em; */
     color: #3D3D3D;
     font-family: 'Noto Sans';
     text-align: center;
